@@ -1,65 +1,59 @@
 ---
 ---
 
-<section id="how-it-works" class="py-24 px-6 border-t border-white/6">
-  <div class="max-w-5xl mx-auto">
+<section id="how-it-works" class="lp-section lp-divider border-t min-h-screen flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+  <div class="max-w-5xl mx-auto w-full">
 
-    <div class="text-center mb-16">
-      <p class="text-xs text-white/30 uppercase tracking-widest mb-4">How it works</p>
-      <h2 class="text-3xl sm:text-4xl font-black leading-tight">
+    <div class="text-center mb-10 sm:mb-14">
+      <p class="lp-muted text-xs uppercase tracking-widest mb-4">How it works</p>
+      <h2 class="lp-text font-black leading-tight" style="font-size: clamp(1.75rem, 4vw, 2.75rem);">
         Three Steps to<br/>
-        <span class="text-purple-400">Autonomous Yield</span>
+        <span class="lp-accent">Autonomous Yield</span>
       </h2>
     </div>
 
     <!-- steps -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-20">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 mb-6 sm:mb-8">
       {[
         {
           step: "01",
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>`,
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>`,
           title: "Connect & Instruct",
           desc: "Connect your wallet, deploy a Safe Smart Account in one click, then type your strategy in plain English.",
           tag: "ERC-4337 Safe Wallet",
         },
         {
           step: "02",
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2M15 20v2M2 15h2M20 15h2M2 9h2M20 9h2M9 2v2M9 20v2"/></svg>`,
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2M15 20v2M2 15h2M20 15h2M2 9h2M20 9h2M9 2v2M9 20v2"/></svg>`,
           title: "AI Decides On-Chain",
           desc: "Every 6 hours, Chainlink Automation triggers an LLM call via Chainlink Functions. The AI analyzes live pool data and outputs a verified JSON decision.",
           tag: "Chainlink Functions + Qwen 2.5",
         },
         {
           step: "03",
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>`,
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>`,
           title: "Execute & Earn",
           desc: "Agent executes the rebalance via your Safe module. Funds move between Aave and Morpho automatically. You just watch the yield grow.",
           tag: "Aave V3 + Morpho Blue",
         },
       ].map((item) => (
-        <div class="relative rounded-xl border border-white/8 p-7 flex flex-col gap-4 hover:border-white/15 transition-colors"
-          style="background: rgba(255,255,255,0.03);">
-          <span class="absolute top-5 right-6 text-5xl font-black text-white/5 select-none leading-none">
+        <div class="lp-card relative p-5 sm:p-7 flex flex-col gap-4">
+          <span class="lp-text absolute top-4 right-5 font-black select-none leading-none"
+            style="font-size: clamp(2.5rem, 5vw, 3.5rem); opacity: 0.05;">
             {item.step}
           </span>
-          <div class="w-10 h-10 rounded-lg flex items-center justify-center border border-white/10"
-            style="background: rgba(255,255,255,0.05);"
-            set:html={item.icon}>
-          </div>
-          <h3 class="font-bold text-white text-lg">{item.title}</h3>
-          <p class="text-white/40 text-sm leading-relaxed flex-1">{item.desc}</p>
-          <span class="inline-flex self-start px-3 py-1 rounded-md text-xs font-medium text-white/50 border border-white/10"
-            style="background: rgba(255,255,255,0.04);">
-            {item.tag}
-          </span>
+          <div class="lp-icon-box lp-muted w-10 h-10 flex items-center justify-center shrink-0" set:html={item.icon} />
+          <h3 class="lp-text font-bold text-base sm:text-lg">{item.title}</h3>
+          <p class="lp-muted text-sm leading-relaxed flex-1">{item.desc}</p>
+          <span class="lp-tag self-start">{item.tag}</span>
         </div>
       ))}
     </div>
 
     <!-- architecture flow -->
-    <div class="rounded-xl border border-white/8 p-8" style="background: rgba(255,255,255,0.02);">
-      <p class="text-xs text-white/30 uppercase tracking-widest mb-6 text-center">Architecture</p>
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 text-sm flex-wrap">
+    <div class="lp-card p-5 sm:p-8">
+      <p class="lp-muted text-xs uppercase tracking-widest mb-5 text-center">Architecture</p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 flex-wrap">
         {[
           "User EOA Wallet",
           "Safe Smart Account",
@@ -68,13 +62,10 @@
           "Chainlink Functions (LLM)",
           "Aave V3 / Morpho Blue",
         ].map((node, i, arr) => (
-          <div class="flex items-center gap-3">
-            <span class="px-3 py-1.5 rounded-md border border-white/10 text-white/60 text-xs whitespace-nowrap"
-              style="background: rgba(255,255,255,0.04);">
-              {node}
-            </span>
+          <div class="flex items-center gap-2 sm:gap-3">
+            <span class="lp-tag">{node}</span>
             {i < arr.length - 1 && (
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lp-muted shrink-0 hidden sm:block opacity-40"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             )}
           </div>
         ))}
