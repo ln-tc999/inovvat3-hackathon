@@ -1,6 +1,6 @@
 import { useAccount, useConnect, useDisconnect, useChainId, useSwitchChain } from "wagmi";
 import { baseSepolia } from "wagmi/chains";
-import { Wallet, LogOut, AlertCircle, ChevronDown } from "lucide-react";
+import { Wallet, LogOut, AlertCircle, ChevronDown, LayoutDashboard } from "lucide-react";
 import { useState } from "react";
 import { WagmiProvider } from "../components/WagmiProvider";
 import { STRINGS } from "../lib/strings";
@@ -9,6 +9,16 @@ interface Props {
   variant?: "hero" | "header";
   redirectToDashboard?: boolean;
 }
+
+// Shared button styles — no dependency on global CSS classes
+const btnPrimary =
+  "inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold bg-purple-600 text-white hover:bg-purple-500 transition-all duration-200 hover:-translate-y-0.5 cursor-pointer";
+const btnSecondary =
+  "inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold bg-transparent text-white/60 hover:text-white border border-white/15 hover:border-white/30 transition-all duration-200 hover:-translate-y-0.5 cursor-pointer";
+const btnHero =
+  "inline-flex items-center gap-2 px-6 py-3 rounded-lg text-base font-semibold bg-purple-600 text-white hover:bg-purple-500 transition-all duration-200 hover:-translate-y-0.5 cursor-pointer";
+const btnWarn =
+  "inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold bg-transparent text-amber-400 border border-amber-600/50 hover:border-amber-400 transition-all duration-200 cursor-pointer";
 
 function WalletConnectInner({ variant = "header", redirectToDashboard = false }: Props) {
   const { address, isConnected, isConnecting } = useAccount();
@@ -23,26 +33,17 @@ function WalletConnectInner({ variant = "header", redirectToDashboard = false }:
 
   if (isConnecting) {
     return (
-      <button
-        disabled
-        className={variant === "hero" ? "btn-primary opacity-70 cursor-wait" : "btn-secondary opacity-70 cursor-wait"}
-        aria-label={STRINGS.connecting}
-        aria-busy="true"
-      >
-        <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" aria-hidden="true" />
-        {STRINGS.connecting}
+      <button disabled className={variant === "hero" ? btnHero + " opacity-70 cursor-wait" : btnPrimary + " opacity-70 cursor-wait"}>
+        <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+        Connecting…
       </button>
     );
   }
 
   if (isWrongChain) {
     return (
-      <button
-        onClick={() => switchChain({ chainId: baseSepolia.id })}
-        className="btn-secondary border-amber-600 text-amber-400 hover:border-amber-400"
-        aria-label="Switch to Base Sepolia network"
-      >
-        <AlertCircle size={16} aria-hidden="true" />
+      <button onClick={() => switchChain({ chainId: baseSepolia.id })} className={btnWarn}>
+        <AlertCircle size={16} />
         Switch to Base
       </button>
     );
@@ -54,29 +55,34 @@ function WalletConnectInner({ variant = "header", redirectToDashboard = false }:
       return null;
     }
     return (
-      <div className="relative">
+      <div className="relative flex items-center gap-2">
+        {/* Dashboard shortcut when connected */}
+        <a href="/dashboard" className={btnSecondary} aria-label="Open Dashboard">
+          <LayoutDashboard size={15} />
+          Dashboard
+        </a>
         <button
           onClick={() => setShowMenu((v) => !v)}
-          className="btn-secondary"
+          className={btnPrimary}
           aria-label={`Connected as ${shortAddr}`}
           aria-expanded={showMenu}
-          aria-haspopup="true"
         >
-          <Wallet size={16} aria-hidden="true" />
+          <Wallet size={15} />
           {shortAddr}
-          <ChevronDown size={14} aria-hidden="true" />
+          <ChevronDown size={13} />
         </button>
         {showMenu && (
           <div
             role="menu"
-            className="absolute right-0 mt-2 w-44 card shadow-lg z-50 py-1"
+            className="absolute right-0 top-full mt-2 w-44 rounded-xl border border-white/8 py-1 z-50"
+            style={{ background: "rgba(8,8,15,0.96)" }}
           >
             <button
               role="menuitem"
               onClick={() => { disconnect(); setShowMenu(false); }}
-              className="w-full flex items-center gap-2 px-4 py-2 text-sm text-slate-400 hover:text-red-400 hover:bg-slate-700/50 transition-colors"
+              className="w-full flex items-center gap-2 px-4 py-2 text-sm text-white/40 hover:text-red-400 transition-colors rounded-md"
             >
-              <LogOut size={14} aria-hidden="true" />
+              <LogOut size={14} />
               Disconnect
             </button>
           </div>
@@ -88,11 +94,11 @@ function WalletConnectInner({ variant = "header", redirectToDashboard = false }:
   return (
     <button
       onClick={() => connect({ connector: connectors[0] })}
-      className={variant === "hero" ? "btn-primary text-base px-8 py-3" : "btn-primary"}
+      className={variant === "hero" ? btnHero : btnPrimary}
       aria-label={STRINGS.ctaConnect}
     >
-      <Wallet size={variant === "hero" ? 20 : 16} aria-hidden="true" />
-      {variant === "hero" ? STRINGS.ctaConnect : "Connect Wallet"}
+      <Wallet size={variant === "hero" ? 18 : 15} />
+      {variant === "hero" ? "Connect Wallet & Start Earning" : "Connect Wallet"}
     </button>
   );
 }
