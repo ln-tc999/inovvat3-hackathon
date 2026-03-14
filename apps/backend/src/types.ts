@@ -50,5 +50,8 @@ export interface MockUpkeepResult {
   newAPY: number;
 }
 
+// Async version for DashScope
+export type MockUpkeepResultAsync = Promise<MockUpkeepResult>;
+
 // Hono App type — exported for hc<App> typed RPC on frontend
 export type AppType = Hono;
