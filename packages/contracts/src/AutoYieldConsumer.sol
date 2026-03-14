@@ -88,7 +88,7 @@ contract AutoYieldConsumer is FunctionsClient, AutomationCompatibleInterface {
         string[] calldata args
     ) external onlyOwner returns (bytes32 requestId) {
         FunctionsRequest.Request memory req;
-        req.initializeRequestForInlineExecution(jsSource, FunctionsRequest.Location.Inline, "");
+        req.initializeRequestForInlineJavaScript(jsSource);
         req.setArgs(args);
 
         requestId = _sendRequest(req.encodeCBOR(), subscriptionId, gasLimit, donId);
