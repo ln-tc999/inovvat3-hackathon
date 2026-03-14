@@ -14,23 +14,24 @@ import SiteNavbar       from "../islands/SiteNavbar";
 
   <SiteNavbar client:load />
 
-  <main class="bg-[#08080f] text-white overflow-hidden">
-    <HeroSection />
-    <AboutSection />
-    <FeaturesSection />
-    <HowItWorksSection />
-    <FaqSection />
-    <CtaSection />
+  <main id="scroll-container" class="overflow-x-hidden overflow-y-scroll" style="height: 100vh; scroll-snap-type: y mandatory;">
+    <div style="scroll-snap-align: start;"><HeroSection /></div>
+    <div style="scroll-snap-align: start;"><AboutSection /></div>
+    <div style="scroll-snap-align: start;"><FeaturesSection /></div>
+    <div style="scroll-snap-align: start;"><HowItWorksSection /></div>
+    <div style="scroll-snap-align: start;"><FaqSection /></div>
+    <div style="scroll-snap-align: start;"><CtaSection /></div>
 
-    <!-- wordmark -->
-    <div class="border-t border-white/6 py-8 px-6 text-center overflow-hidden" style="background: #08080f;">
-      <p class="font-black text-white/4 leading-none tracking-tighter select-none"
-        style="font-size: clamp(3rem, 14vw, 11rem);">
-        YIELDGUARD
-      </p>
+    <!-- Footer snap section -->
+    <div style="scroll-snap-align: start; min-height: 100vh; display: flex; flex-direction: column; justify-content: center;">
+      <div class="lp-section flex-1 flex items-center justify-center overflow-hidden">
+        <p class="font-black leading-none tracking-tighter select-none lp-muted"
+          style="font-size: clamp(3rem, 14vw, 11rem); opacity: 0.08;">
+          YIELDGUARD
+        </p>
+      </div>
+      <Footer />
     </div>
   </main>
-
-  <Footer />
 
 </MainLayout>
