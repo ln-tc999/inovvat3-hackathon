@@ -1,25 +1,20 @@
-import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
-import "dotenv/config";
-
 import { agentRouter } from "./routes/agent.js";
-import { webhookRouter } from "./routes/webhook.js";
-import { portfolioRouter } from "./routes/portfolio.js";
 
-const app = new Hono();
+const app = new Hono().basePath("/api");
 
-app.use("*", logger());
+// Middleware
 app.use("*", cors({ origin: "*" }));
+app.use("*", logger());
 
-app.get("/health", (c) => c.json({ status: "ok", timestamp: Date.now() }));
+// Health check
+app.get("/health", (c) => c.json({ status: "ok", ts: Date.now() }));
 
-app.route("/api/agent", agentRouter);
-app.route("/api/webhook", webhookRouter);
-app.route("/api/portfolio", portfolioRouter);
+// Routes
+app.route("/agent", agentRouter);
 
-const port = Number(process.env.PORT) || 3001;
-console.log(`🚀 AutoYield backend running on port ${port}`);
-
-serve({ fetch: app.fetch, port });
+// Export typed app for hc<AppType> on frontend
+export { app };
+export type AppType = typeof app;
