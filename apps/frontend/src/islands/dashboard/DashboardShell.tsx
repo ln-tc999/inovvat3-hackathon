@@ -56,10 +56,15 @@ function DashboardContent() {
   );
 }
 
-export default function DashboardShell() {
+function DashboardShellInner() {
+  const { isDark } = useTheme();
   return (
-    <WagmiProvider>
+    <WagmiProvider isDark={isDark}>
       <DashboardContent />
     </WagmiProvider>
   );
+}
+
+export default function DashboardShell() {
+  return <DashboardShellInner />;
 }
