@@ -1,6 +1,6 @@
 // Mock for hackathon - simulates on-chain portfolio state
 import type { PortfolioPosition, MockUpkeepResult } from "../types.js";
-import { mockLLMDecision } from "./mockLLM.js";
+import { dashscopeLLMDecision } from "./dashscopeLLM.js";
 
 // Default mock portfolio
 export const DEFAULT_PORTFOLIO: PortfolioPosition[] = [
@@ -28,18 +28,18 @@ export function calculateDailyYield(amountUSD: number, apyBps: number): number {
   return (amountUSD * (apyBps / 10000)) / 365;
 }
 
-export function runMockUpkeep(
+export async function runMockUpkeep(
   instruction: string,
   currentPortfolio: PortfolioPosition[]
-): MockUpkeepResult {
-  // Run LLM decision on largest position
+): Promise<MockUpkeepResult> {
   const largest = [...currentPortfolio].sort((a, b) => b.amountUSD - a.amountUSD)[0];
 
-  const decision = mockLLMDecision(
+  const decision = await dashscopeLLMDecision(
     instruction,
     largest?.symbol ?? "USDC",
     largest?.protocol ?? "Aave",
-    (largest?.amount ?? 1000) * 1e6
+    (largest?.amount ?? 1000) * 1e6,
+    currentPortfolio  // full portfolio context
   );
 
   // Apply actions to portfolio (mock)
