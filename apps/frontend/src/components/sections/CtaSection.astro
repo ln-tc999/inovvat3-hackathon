@@ -2,32 +2,34 @@
 import WalletConnect from "../../islands/WalletConnect";
 ---
 
-<section id="cta" class="py-32 px-6 border-t border-white/6 relative overflow-hidden">
-  <div class="max-w-3xl mx-auto text-center relative z-10">
-    <p class="text-xs text-white/30 uppercase tracking-widest mb-6">Get started</p>
-    <h2 class="text-4xl sm:text-5xl font-black mb-6 leading-tight">
+<section id="cta" class="lp-section lp-divider border-t min-h-screen flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+  <div class="max-w-3xl mx-auto w-full text-center">
+
+    <p class="lp-muted text-xs uppercase tracking-widest mb-5 sm:mb-6">Get started</p>
+    <h2 class="lp-text font-black mb-5 sm:mb-6 leading-tight" style="font-size: clamp(2rem, 5vw, 3.5rem);">
       Where DeFi Yield and<br/>
-      <span class="text-purple-400">AI Agents Connect</span>
+      <span class="lp-accent">AI Agents Connect</span>
     </h2>
-    <p class="text-white/40 mb-10 text-base max-w-lg mx-auto leading-relaxed">
+    <p class="lp-muted mb-8 sm:mb-10 max-w-lg mx-auto leading-relaxed"
+      style="font-size: clamp(0.875rem, 1.25vw, 1rem);">
       Connect your wallet, set your strategy in plain English, and let the agent work.
       No DeFi expertise required.
     </p>
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
       <WalletConnect client:load variant="hero" redirectToDashboard={true} />
       <a href="/dashboard"
-        class="px-6 py-3 rounded-lg border border-white/15 text-white/70 text-sm font-medium hover:border-white/30 hover:text-white transition-all">
+        class="lp-badge px-6 py-3 text-sm font-medium hover:border-[var(--accent)] transition-colors">
         Open Dashboard
       </a>
     </div>
 
     <!-- ecosystem pills -->
-    <div class="mt-14 flex flex-wrap items-center justify-center gap-3">
+    <div class="mt-12 sm:mt-14 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
       {["Aave V3", "Morpho Blue", "Chainlink Functions", "Chainlink Automation", "Safe Wallet", "Base Chain"].map((name) => (
-        <span class="px-4 py-1.5 rounded-md border border-white/8 text-white/35 text-xs font-medium">
-          {name}
-        </span>
+        <span class="lp-tag">{name}</span>
       ))}
     </div>
+
   </div>
 </section>
