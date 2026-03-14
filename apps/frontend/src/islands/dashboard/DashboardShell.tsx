@@ -16,7 +16,7 @@ function DashboardContent() {
     <div style={{ background: "var(--bg)", minHeight: "100vh" }}>
       <TopNavBar isDark={isDark} onToggle={toggle} />
 
-      <main style={{ paddingTop: 64 }} aria-label="Dashboard main content">
+      <main style={{ paddingTop: 76 }} aria-label="Dashboard main content">
         <div style={{ maxWidth: 1440, margin: "0 auto", padding: "32px" }}
           className="max-md:px-5 max-sm:px-3">
 
