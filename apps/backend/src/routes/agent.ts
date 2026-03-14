@@ -1,65 +1,101 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
-import { keccak256, toBytes, encodeAbiParameters, parseAbiParameters } from "viem";
-import { getYieldDecision } from "../lib/llm.js";
-import { getUserPolicy } from "../lib/chain.js";
-import type { PoolData } from "@autoyield/shared";
+import { mockLLMDecision } from "../services/mockLLM.js";
+import { runMockUpkeep, DEFAULT_PORTFOLIO } from "../services/yieldOptimizer.js";
+import type { AgentStatus } from "../types.js";
 
 export const agentRouter = new Hono();
 
-const instructionSchema = z.object({
-  userAddress: z.string().startsWith("0x"),
-  instruction: z.string().min(5).max(500),
+// ── In-memory state (mock for hackathon — no DB needed server-side) ───────────
+// Real persistence lives in client-side IndexedDB via Dexie.js
+let agentState: AgentStatus = {
+  active: false,
+  agentId: "agent-" + Math.random().toString(36).slice(2, 9),
+  lastAction: "Waiting for instruction",
+  lastActionAt: Date.now(),
+  currentAPY: 450,
+  instruction: "",
+  totalProfitUSD: 0,
+  portfolio: DEFAULT_PORTFOLIO,
+};
+
+// ── Schemas ───────────────────────────────────────────────────────────────────
+const setInstructionSchema = z.object({
+  instruction: z.string().min(5, "Instruction too short").max(500),
   maxRisk: z.number().min(1).max(10).optional(),
+  userAddress: z.string().optional(),
 });
 
-// Mock pool data — in production fetch from The Graph / Chainlink oracle
-const MOCK_POOLS: PoolData[] = [
-  { protocol: "Aave V3", asset: "USDC", apy: 450, riskScore: 2, tvl: BigInt("50000000000000") },
-  { protocol: "Morpho Blue", asset: "USDC", apy: 620, riskScore: 3, tvl: BigInt("20000000000000") },
-];
+const pauseSchema = z.object({
+  active: z.boolean(),
+});
 
-/// POST /api/agent/instruct — store instruction and get LLM preview
+// ── POST /api/agent/set-instruction ──────────────────────────────────────────
 agentRouter.post(
-  "/instruct",
-  zValidator("json", instructionSchema),
-  async (c) => {
-    const { userAddress, instruction, maxRisk } = c.req.valid("json");
+  "/set-instruction",
+  zValidator("json", setInstructionSchema),
+  (c) => {
+    const { instruction, maxRisk } = c.req.valid("json");
 
-    const policy = await getUserPolicy(userAddress as `0x${string}`).catch(() => null);
-    const effectiveRisk = maxRisk ?? policy?.maxRisk ?? 5;
+    // Mock for hackathon - no real Chainlink
+    const decision = mockLLMDecision(instruction);
 
-    const decision = await getYieldDecision(
+    agentState = {
+      ...agentState,
+      active: true,
       instruction,
-      {}, // balances fetched on-chain in production
-      MOCK_POOLS,
-      effectiveRisk
-    );
-
-    const instructionHash = keccak256(toBytes(instruction));
+      lastAction: decision.reason,
+      lastActionAt: Date.now(),
+      currentAPY: decision.suggestedAPY,
+    };
 
     return c.json({
-      instructionHash,
-      decision,
-      preview: `Agent will: ${decision.reason}`,
+      success: true,
+      agentId: agentState.agentId,
+      preview: decision.reason,
+      suggestedAPY: decision.suggestedAPY,
+      riskScore: decision.riskScore,
     });
   }
 );
 
-/// GET /api/agent/status/:address
-agentRouter.get("/status/:address", async (c) => {
-  const address = c.req.param("address") as `0x${string}`;
-  const policy = await getUserPolicy(address).catch(() => null);
+// ── GET /api/agent/status ─────────────────────────────────────────────────────
+agentRouter.get("/status", (c) => {
+  return c.json(agentState);
+});
 
-  if (!policy) {
-    return c.json({ error: "No policy found" }, 404);
+// ── POST /api/agent/pause ─────────────────────────────────────────────────────
+agentRouter.post("/pause", zValidator("json", pauseSchema), (c) => {
+  const { active } = c.req.valid("json");
+  agentState = { ...agentState, active };
+  return c.json({ success: true, active });
+});
+
+// ── POST /api/agent/mock-upkeep ───────────────────────────────────────────────
+// Mock for hackathon - simulates Chainlink Automation trigger every 6h
+agentRouter.post("/mock-upkeep", (c) => {
+  if (!agentState.active) {
+    return c.json({ error: "Agent is paused" }, 400);
   }
 
+  const result = runMockUpkeep(agentState.instruction || "maximize yield", agentState.portfolio);
+
+  // Accumulate profit
+  const dailyYield = result.newPortfolio.reduce((sum, p) => sum + p.yieldEarnedToday, 0);
+  agentState = {
+    ...agentState,
+    portfolio: result.newPortfolio,
+    currentAPY: result.newAPY,
+    lastAction: result.reason,
+    lastActionAt: Date.now(),
+    totalProfitUSD: agentState.totalProfitUSD + dailyYield,
+  };
+
   return c.json({
-    active: policy.active,
-    maxRisk: policy.maxRisk,
-    sessionExpiry: policy.sessionExpiry.toString(),
-    dailyLimit: policy.dailyLimit.toString(),
+    actions: result.actions,
+    reason: result.reason,
+    newPortfolio: result.newPortfolio,
+    newAPY: result.newAPY,
   });
 });
