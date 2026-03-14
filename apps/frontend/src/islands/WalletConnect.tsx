@@ -29,8 +29,8 @@ function WalletConnectInner({ variant = "header", redirectToDashboard = false }:
       {isConnected && (
         <a
           href="/dashboard"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:-translate-y-0.5"
-          style={{ background: "transparent", color: "var(--muted)", border: "1px solid var(--border)" }}
+          className="btn-fill-up inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold"
+          style={{ background: "var(--surface-2)", color: "var(--text)", border: "1px solid var(--border)" }}
         >
           <LayoutDashboard size={15} />
           Dashboard
