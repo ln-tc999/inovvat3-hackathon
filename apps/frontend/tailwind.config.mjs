@@ -1,27 +1,43 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./src/**/*.{astro,html,js,jsx,ts,tsx}"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
-        brand: {
-          50:  "#f0fdf4",
-          100: "#dcfce7",
-          400: "#4ade80",
-          500: "#22c55e",
-          600: "#16a34a",
-          900: "#14532d",
-        },
-        dark: {
-          900: "#0a0a0f",
-          800: "#111118",
-          700: "#1a1a24",
-          600: "#22222f",
+        dash: {
+          bg:       "#181828",
+          card:     "#232336",
+          nav:      "#22223a",
+          header:   "#1a1a2a",
+          border:   "#29293d",
+          purple:   "#a78bfa",
+          cyan:     "#5eead4",
+          text:     "#ffffff",
+          muted:    "#b3b3c6",
         },
       },
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
-        mono: ["JetBrains Mono", "monospace"],
+      },
+      fontSize: {
+        "dash-heading": ["28px", { lineHeight: "1.2", fontWeight: "700" }],
+        "dash-section":  ["18px", { lineHeight: "1.2", fontWeight: "700" }],
+        "dash-label":    ["14px", { lineHeight: "1.5", fontWeight: "500" }],
+        "dash-body":     ["13px", { lineHeight: "1.5", fontWeight: "400" }],
+        "dash-nav":      ["15px", { lineHeight: "1.5", fontWeight: "500" }],
+        "dash-number":   ["32px", { lineHeight: "1.2", fontWeight: "700" }],
+        "dash-axis":     ["12px", { lineHeight: "1.5", fontWeight: "400" }],
+      },
+      letterSpacing: {
+        "dash-body": "0.01em",
+        "dash-nav":  "0.04em",
+      },
+      borderRadius: {
+        "dash": "24px",
+      },
+      boxShadow: {
+        "dash-card": "0 2px 16px 0 rgba(0,0,0,0.10)",
       },
     },
   },
