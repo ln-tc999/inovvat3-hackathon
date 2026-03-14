@@ -59,7 +59,6 @@ contract AaveV3Adapter is ILendingAdapter {
 
     /// @notice Returns current liquidity rate in basis points
     function getAPY(address asset) external view returns (uint256) {
-        (,,,,,,,,,,,,,, ) = pool.getReserveData(asset); // silence unused warning
         // currentLiquidityRate is ray (1e27), convert to bps (1e4)
         (, , uint128 currentLiquidityRate, , , , , , , , , , , ,) = pool.getReserveData(asset);
         return uint256(currentLiquidityRate) / 1e23; // ray → bps
