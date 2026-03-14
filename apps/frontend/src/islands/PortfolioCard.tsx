@@ -94,7 +94,8 @@ function PortfolioCardInner() {
         <button
           onClick={() => refetch()}
           disabled={isFetching}
-          className="p-1.5 rounded-lg text-slate-400 hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors disabled:opacity-50"
+          className="btn-fill-up d-badge"
+          style={{ cursor: "pointer", padding: "6px 8px" }}
           aria-label="Refresh portfolio"
         >
           <RefreshCw size={14} className={isFetching ? "animate-spin" : ""} aria-hidden="true" />
