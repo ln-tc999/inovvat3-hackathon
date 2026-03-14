@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
-import { mockLLMDecision } from "../services/mockLLM.js";
+import { dashscopeLLMDecision } from "../services/dashscopeLLM.js";
 import { runMockUpkeep, DEFAULT_PORTFOLIO } from "../services/yieldOptimizer.js";
 import type { AgentStatus } from "../types.js";
 
@@ -35,11 +35,11 @@ const pauseSchema = z.object({
 agentRouter.post(
   "/set-instruction",
   zValidator("json", setInstructionSchema),
-  (c) => {
+  async (c) => {
     const { instruction, maxRisk } = c.req.valid("json");
 
-    // Mock for hackathon - no real Chainlink
-    const decision = mockLLMDecision(instruction);
+    // Call DashScope Qwen LLM (falls back to mock if no API key)
+    const decision = await dashscopeLLMDecision(instruction);
 
     agentState = {
       ...agentState,
@@ -74,12 +74,12 @@ agentRouter.post("/pause", zValidator("json", pauseSchema), (c) => {
 
 // ── POST /api/agent/mock-upkeep ───────────────────────────────────────────────
 // Mock for hackathon - simulates Chainlink Automation trigger every 6h
-agentRouter.post("/mock-upkeep", (c) => {
+agentRouter.post("/mock-upkeep", async (c) => {
   if (!agentState.active) {
     return c.json({ error: "Agent is paused" }, 400);
   }
 
-  const result = runMockUpkeep(agentState.instruction || "maximize yield", agentState.portfolio);
+  const result = await runMockUpkeep(agentState.instruction || "maximize yield", agentState.portfolio);
 
   // Accumulate profit
   const dailyYield = result.newPortfolio.reduce((sum, p) => sum + p.yieldEarnedToday, 0);
