@@ -44,7 +44,7 @@ if [ -n "$DELETED_FILES" ]; then
         if [ -n "$file" ]; then
             echo "   → Removing: $file"
             git rm "$file" 2>/dev/null
-            git commit -m "🗑️ delete: $file - $COMMIT_MSG"
+            git commit -m "delete: $file - $COMMIT_MSG"
             ((COUNT++))
         fi
     done
@@ -57,7 +57,7 @@ if [ -n "$MODIFIED_FILES" ]; then
         if [ -n "$file" ]; then
             echo "   → Staging: $file"
             git add "$file"
-            git commit -m "✏️ update: $file - $COMMIT_MSG"
+            git commit -m "update: $file - $COMMIT_MSG"
             ((COUNT++))
         fi
     done
