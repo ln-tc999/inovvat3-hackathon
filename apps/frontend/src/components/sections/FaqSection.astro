@@ -1,0 +1,63 @@
+---
+const faqs = [
+  {
+    q: "Is my money safe? Who controls my funds?",
+    a: "You do. Your funds live in your own Safe Smart Account — a battle-tested ERC-4337 smart wallet. The agent only has a limited module permission to execute pre-approved actions. You can revoke it or hit the kill switch at any time.",
+  },
+  {
+    q: "What happens if the AI makes a bad decision?",
+    a: "Every LLM output is schema-validated before execution. On top of that, your AgentPolicy contract enforces daily limits, an asset allowlist, and a risk tier cap on-chain. The agent literally cannot exceed your defined boundaries.",
+  },
+  {
+    q: "Which assets and protocols are supported?",
+    a: "Currently USDC and DAI on Aave V3 and Morpho Blue, both on Base. More assets and protocols are on the roadmap for mainnet launch.",
+  },
+  {
+    q: "How often does the agent rebalance?",
+    a: "Every 6 hours, triggered automatically by Chainlink Automation. The agent only moves funds if the APY difference justifies the gas cost — it won't rebalance for marginal gains.",
+  },
+  {
+    q: "Do I need to know DeFi to use this?",
+    a: "No. You just type what you want — e.g. \"Maximize yield, keep risk below 5\" — and the agent handles everything. No protocol knowledge required.",
+  },
+  {
+    q: "Is this audited? Is it production-ready?",
+    a: "This is currently a hackathon MVP running on Base Sepolia testnet. Smart contract audit is planned before mainnet launch. Do not use with real funds until the audit is complete.",
+  },
+];
+---
+
+<section id="faq" class="py-24 px-6 border-t border-white/6">
+  <div class="max-w-3xl mx-auto">
+
+    <div class="text-center mb-14">
+      <p class="text-xs text-white/30 uppercase tracking-widest mb-4">FAQ</p>
+      <h2 class="text-3xl sm:text-4xl font-black">
+        Common Questions
+      </h2>
+    </div>
+
+    <div class="flex flex-col gap-3">
+      {faqs.map((faq, i) => (
+        <details
+          class="group rounded-xl border border-white/8 overflow-hidden"
+          style="background: rgba(255,255,255,0.03);"
+        >
+          <summary class="flex items-center justify-between px-6 py-5 cursor-pointer list-none select-none hover:bg-white/3 transition-colors">
+            <span class="font-medium text-white text-sm pr-4">{faq.q}</span>
+            <svg
+              class="shrink-0 w-4 h-4 text-white/30 transition-transform duration-200 group-open:rotate-45"
+              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"/><path d="M12 5v14"/>
+            </svg>
+          </summary>
+          <div class="px-6 pb-5">
+            <p class="text-white/40 text-sm leading-relaxed">{faq.a}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+
+  </div>
+</section>

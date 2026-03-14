@@ -1,0 +1,38 @@
+---
+---
+
+<section id="about" class="py-24 px-6 border-t border-white/6">
+  <div class="max-w-5xl mx-auto">
+
+    <!-- heading -->
+    <div class="text-center mb-16">
+      <p class="text-xs text-white/30 uppercase tracking-widest mb-4">About</p>
+      <h2 class="text-3xl sm:text-4xl font-black leading-tight">
+        Yield Optimization With YieldGuard Isn't<br/>
+        <span class="text-purple-400">Passive. It's Autonomous.</span>
+      </h2>
+      <p class="mt-6 text-white/40 max-w-2xl mx-auto text-base leading-relaxed">
+        Most DeFi users leave money on the table — APYs shift hourly across protocols.
+        YieldGuard's AI agent monitors, decides, and executes rebalances on-chain
+        while you do literally anything else.
+      </p>
+    </div>
+
+    <!-- metrics -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
+      {[
+        { value: "6h",   label: "Rebalance interval",  sub: "Chainlink Automation" },
+        { value: "<9s",  label: "LLM decision time",   sub: "Chainlink Functions" },
+        { value: "2",    label: "Protocols supported", sub: "Aave V3 + Morpho Blue" },
+        { value: "100%", label: "Non-custodial",       sub: "Safe Smart Account" },
+      ].map((m) => (
+        <div class="rounded-xl border border-white/8 p-6" style="background: rgba(255,255,255,0.03);">
+          <p class="text-4xl font-black text-white">{m.value}</p>
+          <p class="text-white/60 text-sm mt-2 font-medium">{m.label}</p>
+          <p class="text-white/30 text-xs mt-1">{m.sub}</p>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>

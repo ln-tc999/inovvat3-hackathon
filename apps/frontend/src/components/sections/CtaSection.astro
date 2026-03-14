@@ -1,0 +1,33 @@
+---
+import WalletConnect from "../../islands/WalletConnect";
+---
+
+<section id="cta" class="py-32 px-6 border-t border-white/6 relative overflow-hidden">
+  <div class="max-w-3xl mx-auto text-center relative z-10">
+    <p class="text-xs text-white/30 uppercase tracking-widest mb-6">Get started</p>
+    <h2 class="text-4xl sm:text-5xl font-black mb-6 leading-tight">
+      Where DeFi Yield and<br/>
+      <span class="text-purple-400">AI Agents Connect</span>
+    </h2>
+    <p class="text-white/40 mb-10 text-base max-w-lg mx-auto leading-relaxed">
+      Connect your wallet, set your strategy in plain English, and let the agent work.
+      No DeFi expertise required.
+    </p>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <WalletConnect client:load variant="hero" redirectToDashboard={true} />
+      <a href="/dashboard"
+        class="px-6 py-3 rounded-lg border border-white/15 text-white/70 text-sm font-medium hover:border-white/30 hover:text-white transition-all">
+        Open Dashboard
+      </a>
+    </div>
+
+    <!-- ecosystem pills -->
+    <div class="mt-14 flex flex-wrap items-center justify-center gap-3">
+      {["Aave V3", "Morpho Blue", "Chainlink Functions", "Chainlink Automation", "Safe Wallet", "Base Chain"].map((name) => (
+        <span class="px-4 py-1.5 rounded-md border border-white/8 text-white/35 text-xs font-medium">
+          {name}
+        </span>
+      ))}
+    </div>
+  </div>
+</section>
