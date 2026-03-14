@@ -1,0 +1,48 @@
+---
+import { STRINGS } from "../lib/strings";
+---
+
+<section class="relative pt-24 pb-20 px-6 text-center">
+  <!-- Badge -->
+  <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-cyan-400/30 text-cyan-400 text-xs font-medium mb-8">
+    <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+    Live on Base Sepolia Testnet
+  </div>
+
+  <!-- Headline -->
+  <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white max-w-4xl mx-auto leading-tight tracking-tight">
+    {STRINGS.tagline}
+  </h1>
+
+  <!-- Subtitle -->
+  <p class="mt-6 text-lg text-slate-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+    {STRINGS.heroSubtitle}
+  </p>
+
+  <!-- CTA buttons — WalletConnect island injected in page -->
+  <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+    <slot name="cta" />
+    <a
+      href="#how-it-works"
+      class="btn-secondary"
+      aria-label="Learn how DeFAI YieldGuard works"
+    >
+      {STRINGS.ctaLearnMore}
+    </a>
+  </div>
+
+  <!-- Stats row -->
+  <div class="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
+    {[
+      { value: STRINGS.stat1Value, label: STRINGS.stat1Label },
+      { value: STRINGS.stat2Value, label: STRINGS.stat2Label },
+      { value: STRINGS.stat3Value, label: STRINGS.stat3Label },
+      { value: STRINGS.stat4Value, label: STRINGS.stat4Label },
+    ].map((stat) => (
+      <div class="card text-center py-4">
+        <p class="text-cyan-400 font-bold text-lg">{stat.value}</p>
+        <p class="text-slate-500 dark:text-slate-400 text-xs mt-1">{stat.label}</p>
+      </div>
+    ))}
+  </div>
+</section>
