@@ -14,15 +14,15 @@ const queryClient = new QueryClient({
 
 // Custom RainbowKit theme matching our CSS variables
 const rkDarkTheme = darkTheme({
-  accentColor: "#a78bfa",       // var(--accent)
-  accentColorForeground: "#0d0d14",
+  accentColor: "#ff4800",
+  accentColorForeground: "#ffffff",
   borderRadius: "medium",
   fontStack: "system",
-  overlayBlur: "none",          // no blur = better LCP
+  overlayBlur: "none",
 });
 
 const rkLightTheme = lightTheme({
-  accentColor: "#7c3aed",
+  accentColor: "#ff4800",
   accentColorForeground: "#ffffff",
   borderRadius: "medium",
   fontStack: "system",
