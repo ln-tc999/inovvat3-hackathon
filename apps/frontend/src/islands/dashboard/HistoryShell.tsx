@@ -3,6 +3,7 @@ import { useTheme } from "../../lib/useTheme";
 import TopNavBar from "./TopNavBar";
 import ActionHistoryCard from "./ActionHistoryCard";
 import RecentActionsCard from "./RecentActionsCard";
+import HistoryStatsCard from "./HistoryStatsCard";
 
 function HistoryContent() {
   const { isDark, toggle } = useTheme();
@@ -16,7 +17,7 @@ function HistoryContent() {
           style={{ maxWidth: 1440, margin: "0 auto", padding: "32px" }}
           className="max-md:px-5 max-sm:px-3"
         >
-          <div style={{ marginBottom: 28 }}>
+          <div style={{ marginBottom: 24 }}>
             <h1
               style={{
                 fontSize: 28,
@@ -26,7 +27,7 @@ function HistoryContent() {
                 margin: 0,
               }}
             >
-            History
+              History
             </h1>
             <p
               style={{
@@ -36,13 +37,23 @@ function HistoryContent() {
                 lineHeight: 1.5,
               }}
             >
-              Review what your agent has done over time and how actions are distributed.
+              Review what your agent has done over time and how actions are
+              distributed.
             </p>
           </div>
 
-          <div className="grid gap-6" style={{ gridTemplateColumns: "minmax(0, 1.2fr) minmax(0, 1fr)" }}>
-            <ActionHistoryCard />
+          {/* Main history table + distribution donut, tuned proportions */}
+          <div
+            className="grid dash-grid-2 gap-6"
+            style={{ gridTemplateColumns: "minmax(0, 1.7fr) minmax(0, 1fr)" }}
+          >
             <RecentActionsCard />
+            <ActionHistoryCard />
+          </div>
+
+          {/* Compact stats row to keep page dense and consistent with dashboard */}
+          <div style={{ marginTop: 24 }}>
+            <HistoryStatsCard />
           </div>
         </div>
       </main>
