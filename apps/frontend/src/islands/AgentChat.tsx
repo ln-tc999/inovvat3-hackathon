@@ -109,16 +109,17 @@ function AgentChatInner() {
       {/* Suggestion chips */}
       <div className="flex flex-wrap gap-2" role="group" aria-label="Instruction suggestions">
         {SUGGESTIONS.map((s) => (
-          <button
-            key={s}
-            type="button"
-            onClick={() => setValue("instruction", s)}
-            className="px-3 py-1.5 text-xs rounded-full border border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400 hover:border-cyan-400 hover:text-cyan-400 transition-colors"
-            aria-label={`Use suggestion: ${s}`}
-          >
-            {s}
-          </button>
-        ))}
+            <button
+              key={s}
+              type="button"
+              onClick={() => setValue("instruction", s)}
+              className="d-btn d-badge-purple btn-fill-up"
+              style={{ fontSize: 11, height: 28, padding: "0 10px", borderRadius: 9999, cursor: "pointer" }}
+              aria-label={`Use suggestion: ${s}`}
+            >
+              {s}
+            </button>
+          ))}
       </div>
 
       {/* Instruction form */}
@@ -163,7 +164,7 @@ function AgentChatInner() {
           <button
             type="submit"
             disabled={instructionMutation.isPending}
-            className="btn-primary"
+            className="d-btn d-btn-default"
             aria-label="Update agent instruction"
           >
             {instructionMutation.isPending ? (
@@ -179,7 +180,7 @@ function AgentChatInner() {
             type="button"
             onClick={() => upkeepMutation.mutate()}
             disabled={upkeepMutation.isPending || !status?.active}
-            className="btn-secondary"
+            className="d-btn d-btn-default"
             aria-label="Trigger mock agent upkeep cycle"
             title="Simulates Chainlink Automation trigger"
           >
@@ -199,7 +200,7 @@ function AgentChatInner() {
           type="button"
           onClick={() => pauseMutation.mutate(!status?.active)}
           disabled={pauseMutation.isPending}
-          className={status?.active ? "btn-secondary" : "btn-primary"}
+          className="d-btn d-btn-default"
           aria-label={status?.active ? STRINGS.pauseAgent : STRINGS.resumeAgent}
           aria-pressed={!status?.active}
         >
@@ -217,7 +218,7 @@ function AgentChatInner() {
         <button
           type="button"
           onClick={handleKillSwitch}
-          className="btn-danger"
+          className="d-btn d-btn-danger"
           aria-label={killConfirm ? "Confirm kill switch" : STRINGS.killSwitch}
         >
           <AlertTriangle size={16} aria-hidden="true" />
@@ -227,7 +228,8 @@ function AgentChatInner() {
           <button
             type="button"
             onClick={() => setKillConfirm(false)}
-            className="text-xs text-slate-400 hover:text-slate-200 transition-colors"
+            className="d-btn d-btn-default"
+            style={{ fontSize: 12, height: 32 }}
             aria-label="Cancel kill switch"
           >
             Cancel
