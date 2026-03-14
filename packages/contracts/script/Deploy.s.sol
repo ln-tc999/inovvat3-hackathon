@@ -12,7 +12,7 @@ import {IMorpho} from "../src/adapters/MorphoAdapter.sol";
 
 contract Deploy is Script {
     // Base Sepolia addresses
-    address constant AAVE_POOL_SEPOLIA    = 0x07eA79F68B2B3df564D0A34F8e19791234D9b1D3;
+    address constant AAVE_POOL_SEPOLIA    = 0x07ea79F68b2B3Df564d0a34f8E19791234D9b1d3;
     address constant MORPHO_SEPOLIA       = 0xBBBBBbbBBb9cC5e90e3b3Af64bdAF62C37EEFFCb;
     address constant CL_FUNCTIONS_ROUTER  = 0xf9B8fc078197181C841c296C876945aaa425B278;
     address constant CL_AUTOMATION_REG    = 0xE16Df59B887e3Caa439E0b29B42bA2e7976FD8b2;
