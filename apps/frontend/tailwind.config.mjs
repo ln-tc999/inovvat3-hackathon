@@ -18,7 +18,7 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
+        sans: ['"Roboto"', "sans-serif"],
       },
       fontSize: {
         "dash-heading": ["28px", { lineHeight: "1.2", fontWeight: "700" }],
