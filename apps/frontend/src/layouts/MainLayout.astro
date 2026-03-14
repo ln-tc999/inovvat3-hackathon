@@ -10,27 +10,33 @@ const {
 ---
 
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <title>{title}</title>
+    <!-- Theme init: runs before paint to avoid flash -->
+    <script is:inline>
+      (function () {
+        var saved = localStorage.getItem("theme");
+        var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (saved === "light") {
+          document.documentElement.classList.remove("dark");
+        } else if (saved === "dark" || prefersDark) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.add("dark"); // default dark
+        }
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" /></noscript>
     <link rel="stylesheet" href="/src/styles/global.css" />
   </head>
-  <body class="min-h-screen" style="background: #08080f;">
+  <body class="min-h-screen">
     <slot />
-    <script is:inline>
-      // Persist dark mode preference
-      const saved = localStorage.getItem("theme");
-      if (saved === "light") {
-        document.documentElement.classList.remove("dark");
-      } else {
-        document.documentElement.classList.add("dark");
-      }
-    </script>
   </body>
 </html>
