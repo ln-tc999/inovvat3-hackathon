@@ -22,6 +22,7 @@ function ThemeBtn({ isDark, toggle }: { isDark: boolean; toggle: () => void }) {
     <button
       onClick={toggle}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      className="btn-fill-up"
       style={{
         width: 36, height: 36,
         borderRadius: 8,
@@ -30,16 +31,7 @@ function ThemeBtn({ isDark, toggle }: { isDark: boolean; toggle: () => void }) {
         color: "var(--muted)",
         display: "flex", alignItems: "center", justifyContent: "center",
         cursor: "pointer",
-        transition: "color 0.15s, border-color 0.15s",
         flexShrink: 0,
-      }}
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLElement).style.color = "var(--accent)";
-        (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLElement).style.color = "var(--muted)";
-        (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
       }}
     >
       {isDark ? <Sun size={15} /> : <Moon size={15} />}
