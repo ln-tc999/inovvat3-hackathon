@@ -184,13 +184,13 @@ export const NavbarButton = ({
   className?: string;
   variant?: "primary" | "secondary" | "dark" | "gradient";
 } & (React.ComponentPropsWithoutRef<"a"> | React.ComponentPropsWithoutRef<"button">)) => {
-  const base = "px-4 py-2 rounded-lg text-sm font-semibold cursor-pointer transition-all duration-200 hover:-translate-y-0.5 inline-flex items-center justify-center gap-2";
+  const base = "px-4 py-2 rounded-lg text-sm font-semibold cursor-pointer transition-all duration-200 hover:-translate-y-0.5 inline-flex items-center justify-center gap-2 btn-fill-up";
 
   const styles: Record<string, React.CSSProperties> = {
-    primary:   { background: "var(--accent)", color: "var(--accent-fg)" },
-    secondary: { background: "transparent", color: "var(--muted)", border: "1px solid var(--border)" },
-    dark:      { background: "var(--text)", color: "var(--bg)" },
-    gradient:  { background: "var(--accent)", color: "var(--accent-fg)" },
+    primary:   { background: "var(--surface-2)", color: "var(--text)", border: "1px solid var(--accent)" },
+    secondary: { background: "var(--surface-2)", color: "var(--text)", border: "1px solid var(--border)" },
+    dark:      { background: "var(--surface-2)", color: "var(--text)", border: "1px solid var(--border)" },
+    gradient:  { background: "var(--surface-2)", color: "var(--text)", border: "1px solid var(--accent)" },
   };
 
   return (
@@ -198,6 +198,7 @@ export const NavbarButton = ({
       href={href || undefined}
       className={cn(base, className)}
       style={styles[variant]}
+      data-variant={variant}
       {...props}
     >
       {children}
