@@ -1,18 +1,18 @@
-import { createConfig, http } from "wagmi";
+import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { base, baseSepolia } from "wagmi/chains";
-import { injected, coinbaseWallet } from "@wagmi/connectors";
+import { http } from "wagmi";
 
-export const wagmiConfig = createConfig({
+export const wagmiConfig = getDefaultConfig({
+  appName: "DeFAI YieldGuard",
+  // WalletConnect project ID — get free one at https://cloud.walletconnect.com
+  // For hackathon/local dev a placeholder still enables injected wallets
+  projectId: import.meta.env.PUBLIC_WALLETCONNECT_PROJECT_ID ?? "placeholder",
   chains: [baseSepolia, base],
-  connectors: [
-    injected({ target: "metaMask" }),
-    coinbaseWallet({ appName: "DeFAI YieldGuard" }),
-    injected(), // generic injected (Rabby, etc.)
-  ],
   transports: {
     [baseSepolia.id]: http("https://sepolia.base.org"),
     [base.id]: http("https://mainnet.base.org"),
   },
+  ssr: false, // Astro islands are client-only
 });
 
-export const SUPPORTED_CHAIN = baseSepolia; // switch to base for mainnet
+export const SUPPORTED_CHAIN = baseSepolia;
