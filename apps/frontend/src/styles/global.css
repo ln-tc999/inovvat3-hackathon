@@ -1,12 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ── CSS custom properties (shadcn-style theming) ── */
 @layer base {
   :root {
-    /* Light theme */
     --bg:          #f4f4f8;
     --bg-subtle:   #eaeaf0;
     --surface:     #ffffff;
@@ -23,7 +20,6 @@
   }
 
   .dark {
-    /* Dark theme — true deep dark, not grey */
     --bg:          #0d0d14;
     --bg-subtle:   #13131f;
     --surface:     #1a1a2e;
@@ -40,7 +36,7 @@
   }
 
   html {
-    font-family: "Inter", system-ui, sans-serif;
+    font-family: "Roboto", sans-serif;
     scroll-behavior: smooth;
     background-color: var(--bg);
     color: var(--text);
