@@ -26,7 +26,7 @@ function HistoryContent() {
                 margin: 0,
               }}
             >
-              Agent History
+            History
             </h1>
             <p
               style={{
