@@ -1,61 +1,54 @@
 ---
 ---
 
-<section id="features" class="py-24 px-6 border-t border-white/6">
-  <div class="max-w-5xl mx-auto">
+<section id="features" class="lp-section lp-divider border-t min-h-screen flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+  <div class="max-w-5xl mx-auto w-full">
 
-    <div class="text-center mb-16">
-      <p class="text-xs text-white/30 uppercase tracking-widest mb-4">Features</p>
-      <h2 class="text-3xl sm:text-4xl font-black leading-tight">
+    <div class="text-center mb-10 sm:mb-14">
+      <p class="lp-muted text-xs uppercase tracking-widest mb-4">Features</p>
+      <h2 class="lp-text font-black leading-tight" style="font-size: clamp(1.75rem, 4vw, 2.75rem);">
         Everything You Need.<br/>
-        <span class="text-purple-400">Nothing You Don't.</span>
+        <span class="lp-accent">Nothing You Don't.</span>
       </h2>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
       {[
         {
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
           title: "Natural Language Control",
           desc: "Set your strategy in plain English. No DeFi jargon, no complex UI. Just tell the agent what you want.",
         },
         {
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>`,
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>`,
           title: "AI-Powered Decisions",
           desc: "Qwen 2.5 72B analyzes live pool data every 6 hours via Chainlink Functions — verifiable, on-chain, tamper-proof.",
         },
         {
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
           title: "Auto-Rebalance",
           desc: "Agent automatically migrates funds between Aave V3 and Morpho Blue to chase the best available APY.",
         },
         {
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>`,
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>`,
           title: "Non-Custodial by Design",
           desc: "Your funds live in your Safe Smart Account. The agent only has a limited, revocable module permission — never your keys.",
         },
         {
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
           title: "Kill Switch",
           desc: "Pause or stop the agent instantly from the dashboard. Session keys auto-expire in 30 days regardless.",
         },
         {
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`,
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`,
           title: "On-Chain Policy Validation",
           desc: "Every action is validated against your policy — daily limits, asset allowlist, and risk tier — before execution.",
         },
       ].map((f) => (
-        <div
-          class="rounded-xl border border-white/8 p-6 flex flex-col gap-4 transition-colors hover:border-white/15"
-          style="background: rgba(255,255,255,0.03);"
-        >
-          <div
-            class="w-9 h-9 rounded-lg flex items-center justify-center border border-white/10"
-            style="background: rgba(255,255,255,0.05);"
-            set:html={f.icon}
-          />
-          <h3 class="font-bold text-white text-base">{f.title}</h3>
-          <p class="text-white/40 text-sm leading-relaxed">{f.desc}</p>
+        <div class="lp-card p-5 sm:p-6 flex flex-col gap-4">
+          <div class="lp-icon-box lp-muted w-9 h-9 flex items-center justify-center shrink-0" set:html={f.icon} />
+          <h3 class="lp-text font-bold text-sm sm:text-base">{f.title}</h3>
+          <p class="lp-muted text-sm leading-relaxed">{f.desc}</p>
         </div>
       ))}
     </div>
