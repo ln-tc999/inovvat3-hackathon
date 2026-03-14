@@ -1,6 +1,8 @@
 import { WagmiProvider } from "../../components/WagmiProvider";
 import { useTheme } from "../../lib/useTheme";
 import TopNavBar from "./TopNavBar";
+import TotalPortfolioCard from "./TotalPortfolioCard";
+import YieldOverviewCard from "./YieldOverviewCard";
 import PortfolioCard from "../PortfolioCard";
 
 function PortfolioContent() {
@@ -15,7 +17,7 @@ function PortfolioContent() {
           style={{ maxWidth: 1440, margin: "0 auto", padding: "32px" }}
           className="max-md:px-5 max-sm:px-3"
         >
-          <div style={{ marginBottom: 28 }}>
+          <div style={{ marginBottom: 24 }}>
             <h1
               style={{
                 fontSize: 28,
@@ -35,10 +37,21 @@ function PortfolioContent() {
                 lineHeight: 1.5,
               }}
             >
-              See all your active positions, APY, and yield breakdown across protocols.
+              See all your active positions, APY, and yield breakdown across
+              protocols.
             </p>
           </div>
 
+          {/* Summary row: total + yield breakdown, same density as main dashboard */}
+          <div
+            className="grid dash-grid-2 gap-6"
+            style={{ gridTemplateColumns: "2fr 1.1fr", marginBottom: 24 }}
+          >
+            <TotalPortfolioCard />
+            <YieldOverviewCard />
+          </div>
+
+          {/* Detailed positions table */}
           <div>
             <PortfolioCard />
           </div>
