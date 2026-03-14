@@ -20,17 +20,29 @@ export default function TopNavBar({ onToggle, isDark }: Props) {
       style={{
         position: "fixed",
         top: 0, left: 0, right: 0,
-        height: 64,
         zIndex: 50,
-        background: "var(--nav)",
-        borderBottom: "1px solid var(--border)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "0 32px",
-        gap: 16,
+        pointerEvents: "none",
       }}
     >
+      {/* Floating inner — exact same spec as NavBody scrolled state on landing */}
+      <div
+        style={{
+          width: "65%",
+          minWidth: 720,
+          maxWidth: 1152,
+          margin: "10px auto 0",
+          background: "var(--nav)",
+          border: "1px solid var(--border)",
+          borderRadius: 8,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "12px 20px",
+          gap: 16,
+          boxShadow: "var(--shadow)",
+          pointerEvents: "auto",
+        }}
+      >
       {/* Left: brand */}
       <a
         href="/"
@@ -41,8 +53,8 @@ export default function TopNavBar({ onToggle, isDark }: Props) {
         <div
           style={{
             width: 32, height: 32,
-            borderRadius: "50%",
-            background: "linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%)",
+            borderRadius: 8,
+            background: "var(--accent)",
             display: "flex", alignItems: "center", justifyContent: "center",
             fontSize: 11, fontWeight: 700, color: "#fff",
             flexShrink: 0,
@@ -56,7 +68,7 @@ export default function TopNavBar({ onToggle, isDark }: Props) {
         </span>
       </a>
 
-      {/* Center: nav pills — hidden on small screens */}
+      {/* Center: nav items — same style as landing NavItems */}
       <nav
         className="hidden md:flex items-center gap-1"
         aria-label="Dashboard sections"
@@ -65,32 +77,20 @@ export default function TopNavBar({ onToggle, isDark }: Props) {
         {NAV_PILLS.map((pill, i) => (
           <button
             key={pill}
+            className="btn-fill-up"
             style={{
               height: 34,
               padding: "0 14px",
               fontSize: 13,
               fontWeight: 500,
-              letterSpacing: "0.03em",
-              background: i === 0 ? "var(--accent)" : "transparent",
-              color: i === 0 ? "#fff" : "var(--muted)",
-              borderRadius: 9999,
-              border: "none",
+              letterSpacing: "0.02em",
+              background: "transparent",
+              color: i === 0 ? "var(--text)" : "var(--muted)",
+              borderRadius: 8,
+              border: i === 0 ? "1px solid var(--border)" : "1px solid transparent",
               cursor: "pointer",
-              transition: "background 0.15s, color 0.15s",
             }}
             aria-current={i === 0 ? "page" : undefined}
-            onMouseEnter={(e) => {
-              if (i !== 0) {
-                (e.currentTarget as HTMLElement).style.background = "var(--surface-2)";
-                (e.currentTarget as HTMLElement).style.color = "var(--text)";
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (i !== 0) {
-                (e.currentTarget as HTMLElement).style.background = "transparent";
-                (e.currentTarget as HTMLElement).style.color = "var(--muted)";
-              }
-            }}
           >
             {pill}
           </button>
@@ -103,23 +103,15 @@ export default function TopNavBar({ onToggle, isDark }: Props) {
         <button
           onClick={onToggle}
           aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+          className="btn-fill-up"
           style={{
             width: 36, height: 36,
-            borderRadius: 10,
+            borderRadius: 8,
             background: "var(--surface-2)",
             border: "1px solid var(--border)",
             color: "var(--muted)",
             display: "flex", alignItems: "center", justifyContent: "center",
             cursor: "pointer",
-            transition: "color 0.15s, border-color 0.15s",
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLElement).style.color = "var(--accent)";
-            (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLElement).style.color = "var(--muted)";
-            (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
           }}
         >
           {isDark ? <Sun size={16} /> : <Moon size={16} />}
@@ -128,9 +120,10 @@ export default function TopNavBar({ onToggle, isDark }: Props) {
         {/* Bell */}
         <button
           aria-label="Notifications"
+          className="btn-fill-up"
           style={{
             width: 36, height: 36,
-            borderRadius: 10,
+            borderRadius: 8,
             background: "var(--surface-2)",
             border: "1px solid var(--border)",
             color: "var(--muted)",
@@ -146,10 +139,11 @@ export default function TopNavBar({ onToggle, isDark }: Props) {
           <button
             onClick={() => disconnect()}
             aria-label={`Connected: ${shortAddr}. Click to disconnect.`}
+            className="btn-fill-up"
             style={{
               height: 36,
               padding: "0 14px",
-              borderRadius: 9999,
+              borderRadius: 8,
               background: "var(--surface-2)",
               border: "1px solid var(--border)",
               color: "var(--text)",
@@ -157,15 +151,12 @@ export default function TopNavBar({ onToggle, isDark }: Props) {
               fontWeight: 500,
               display: "flex", alignItems: "center", gap: 8,
               cursor: "pointer",
-              transition: "border-color 0.15s",
             }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--accent)"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "var(--border)"; }}
           >
             <div
               style={{
-                width: 22, height: 22, borderRadius: "50%",
-                background: "linear-gradient(135deg, var(--accent), var(--accent-2))",
+                width: 22, height: 22, borderRadius: 6,
+                background: "var(--accent)",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 fontSize: 9, fontWeight: 700, color: "#fff",
               }}
@@ -178,14 +169,15 @@ export default function TopNavBar({ onToggle, isDark }: Props) {
         ) : (
           <button
             onClick={() => connect({ connector: connectors[0] })}
-            className="d-btn d-btn-primary"
-            style={{ height: 36, fontSize: 13 }}
+            className="d-btn d-btn-default"
+            style={{ height: 36, fontSize: 13, borderRadius: 8 }}
             aria-label="Connect wallet"
           >
             <Wallet size={15} />
             Connect
           </button>
         )}
+      </div>
       </div>
     </header>
   );
