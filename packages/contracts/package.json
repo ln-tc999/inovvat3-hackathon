@@ -1,0 +1,10 @@
+{
+  "name": "@autoyield/contracts",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "contracts:compile": "forge build",
+    "contracts:test": "forge test -vvv",
+    "contracts:deploy:testnet": "forge script script/Deploy.s.sol:Deploy --rpc-url https://sepolia.base.org --broadcast --verify"
+  }
+}

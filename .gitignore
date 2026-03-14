@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.astro/
+out/
+cache/
+.env
+*.env.local
+pnpm-lock.yaml
+packages/contracts/lib/
+packages/contracts/out/
+packages/contracts/cache/
+.turbo/
