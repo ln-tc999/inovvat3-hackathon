@@ -1,23 +1,77 @@
-const BASE_URL = import.meta.env.PUBLIC_API_URL ?? "http://localhost:3001";
+// Typed Hono RPC client — no manual fetch needed in islands
+// Uses hono/client for end-to-end type safety
 
-export async function submitInstruction(userAddress: string, instruction: string, maxRisk?: number) {
-  const res = await fetch(`${BASE_URL}/api/agent/instruct`, {
-    method: "POST",
+const BASE_URL =
+  typeof window !== "undefined"
+    ? (import.meta.env.PUBLIC_API_URL ?? "")
+    : "";
+
+// Lightweight typed wrappers (hc requires bundling the full app type,
+// so we use simple typed fetch helpers that match the Hono routes exactly)
+
+export interface SetInstructionResponse {
+  success: boolean;
+  agentId: string;
+  preview: string;
+  suggestedAPY: number;
+  riskScore: number;
+}
+
+export interface AgentStatusResponse {
+  active: boolean;
+  agentId: string;
+  lastAction: string;
+  lastActionAt: number;
+  currentAPY: number;
+  instruction: string;
+  totalProfitUSD: number;
+  portfolio: PortfolioPosition[];
+}
+
+export interface PortfolioPosition {
+  asset: string;
+  symbol: string;
+  amount: number;
+  amountUSD: number;
+  apy: number;
+  protocol: "Aave" | "Morpho";
+  yieldEarnedToday: number;
+}
+
+export interface MockUpkeepResponse {
+  actions: { protocol: string; action: string; asset: string; amount: number }[];
+  reason: string;
+  newPortfolio: PortfolioPosition[];
+  newAPY: number;
+}
+
+async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
+  const res = await fetch(`${BASE_URL}/api${path}`, {
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ userAddress, instruction, maxRisk }),
+    ...init,
   });
-  if (!res.ok) throw new Error("Failed to submit instruction");
-  return res.json();
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ message: "Unknown error" }));
+    throw new Error(err.message ?? "Request failed");
+  }
+  return res.json() as Promise<T>;
 }
 
-export async function getAgentStatus(address: string) {
-  const res = await fetch(`${BASE_URL}/api/agent/status/${address}`);
-  if (!res.ok) return null;
-  return res.json();
-}
+export const apiClient = {
+  setInstruction: (body: { instruction: string; maxRisk?: number; userAddress?: string }) =>
+    apiFetch<SetInstructionResponse>("/agent/set-instruction", {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
 
-export async function getPortfolio(address: string) {
-  const res = await fetch(`${BASE_URL}/api/portfolio/${address}`);
-  if (!res.ok) return null;
-  return res.json();
-}
+  getStatus: () => apiFetch<AgentStatusResponse>("/agent/status"),
+
+  pause: (active: boolean) =>
+    apiFetch<{ success: boolean; active: boolean }>("/agent/pause", {
+      method: "POST",
+      body: JSON.stringify({ active }),
+    }),
+
+  mockUpkeep: () =>
+    apiFetch<MockUpkeepResponse>("/agent/mock-upkeep", { method: "POST" }),
+};
