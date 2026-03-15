@@ -4,9 +4,9 @@ import { z } from "zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
 import { Send, Power, PowerOff, AlertTriangle, Loader2, Zap, CheckCircle } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { apiClient } from "../../lib/api";
-import { addHistoryEntry } from "../../lib/db";
+import { addHistoryEntry, getRiskProfile } from "../../lib/db";
 import { STRINGS } from "../../lib/strings";
 
 const schema = z.object({ instruction: z.string().min(5, "Too short").max(500) });
@@ -25,10 +25,27 @@ export default function AgentControlsCard() {
     refetchInterval: 15_000,
   });
 
+  const { data: profile } = useQuery({
+    queryKey: ["risk-profile", address],
+    queryFn: () => getRiskProfile(address!),
+    enabled: !!address,
+  });
+
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: { instruction: status?.instruction ?? "" },
   });
+
+  // Pre-fill from risk profile if no instruction set yet
+  useEffect(() => {
+    if (profile?.generatedInstruction && !status?.instruction) {
+      setValue("instruction", profile.generatedInstruction);
+    }
+  }, [profile, status?.instruction]);
+
+  const suggestions = profile
+    ? [profile.generatedInstruction, STRINGS.chatSuggestion2, STRINGS.chatSuggestion3]
+    : SUGGESTIONS;
 
   const charCount = watch("instruction")?.length ?? 0;
 
@@ -79,7 +96,7 @@ export default function AgentControlsCard() {
       {/* Suggestion chips */}
       {isConnected && (
         <div className="flex flex-wrap gap-2" role="group" aria-label="Instruction suggestions">
-          {SUGGESTIONS.map((s) => (
+          {suggestions.map((s) => (
             <button
               key={s}
               type="button"
