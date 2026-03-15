@@ -88,7 +88,7 @@ function OnboardingContent() {
             display: "flex", alignItems: "center", justifyContent: "center",
             fontSize: 10, fontWeight: 700, color: "#fff",
           }}>YG</div>
-          <span style={{ fontWeight: 700, fontSize: 15, color: "var(--text)" }}>YieldGuard</span>
+          <span style={{ fontWeight: 700, fontSize: 15, color: "var(--text)" }}>Vatiin AI</span>
         </a>
         <button
           onClick={toggle}
