@@ -1,5 +1,9 @@
+import { useEffect, useState } from "react";
 import { WagmiProvider } from "../../components/WagmiProvider";
 import { useTheme } from "../../lib/useTheme";
+import { useAccount } from "wagmi";
+import { useQuery } from "@tanstack/react-query";
+import { getRiskProfile, isOnboardingComplete } from "../../lib/db";
 import TopNavBar from "./TopNavBar";
 import TotalPortfolioCard from "./TotalPortfolioCard";
 import YieldOverviewCard from "./YieldOverviewCard";
@@ -9,8 +13,45 @@ import YieldGoalsCard from "./YieldGoalsCard";
 import ActionHistoryCard from "./ActionHistoryCard";
 import RecentActionsCard from "./RecentActionsCard";
 
+function LoadingScreen() {
+  return (
+    <div style={{ minHeight: "100vh", background: "var(--bg)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ textAlign: "center" }}>
+        <div style={{ width: 36, height: 36, borderRadius: "50%", border: "3px solid var(--border)", borderTopColor: "var(--accent)", margin: "0 auto 12px", animation: "spin 0.8s linear infinite" }} />
+        <p style={{ fontSize: 14, color: "var(--muted)" }}>Loading...</p>
+      </div>
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+    </div>
+  );
+}
+
 function DashboardContent() {
   const { isDark, toggle } = useTheme();
+  const { address, isConnected } = useAccount();
+  const [guardChecked, setGuardChecked] = useState(false);
+
+  useEffect(() => {
+    if (!isConnected || !address) {
+      window.location.href = "/onboarding";
+      return;
+    }
+    isOnboardingComplete(address).then((complete) => {
+      if (!complete) window.location.href = "/onboarding";
+      else setGuardChecked(true);
+    });
+  }, [address, isConnected]);
+
+  const { data: profile } = useQuery({
+    queryKey: ["risk-profile", address],
+    queryFn: () => getRiskProfile(address!),
+    enabled: !!address && guardChecked,
+  });
+
+  if (!guardChecked) return <LoadingScreen />;
+
+  const greeting = profile?.userName?.trim()
+    ? `Welcome back, ${profile.userName.trim()}`
+    : "Dashboard";
 
   return (
     <div style={{ background: "var(--bg)", minHeight: "100vh" }}>
@@ -32,7 +73,7 @@ function DashboardContent() {
                 margin: 0,
               }}
             >
-              Dashboard
+              {greeting}
             </h1>
             <p
               style={{
