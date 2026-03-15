@@ -3,7 +3,7 @@
 
 export const STRINGS = {
   // App
-  appName: "DeFAI YieldGuard",
+  appName: "Vatiin AI",
   tagline: "Your AI Agent that earns yield 24/7 while you sleep — anywhere in the world",
 
   // Landing
