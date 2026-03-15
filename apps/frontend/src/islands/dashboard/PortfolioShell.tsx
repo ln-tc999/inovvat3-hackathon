@@ -7,6 +7,7 @@ import TopNavBar from "./TopNavBar";
 import TotalPortfolioCard from "./TotalPortfolioCard";
 import YieldOverviewCard from "./YieldOverviewCard";
 import PortfolioCard from "../PortfolioCard";
+import DepositCard from "./DepositCard";
 
 function LoadingScreen() {
   return (
@@ -81,9 +82,13 @@ function PortfolioContent() {
             <YieldOverviewCard />
           </div>
 
-          {/* Detailed positions table */}
-          <div>
+          {/* Positions + Deposit side by side */}
+          <div
+            className="grid dash-grid-2 gap-6"
+            style={{ gridTemplateColumns: "1.6fr 1fr" }}
+          >
             <PortfolioCard />
+            <DepositCard />
           </div>
         </div>
       </main>
