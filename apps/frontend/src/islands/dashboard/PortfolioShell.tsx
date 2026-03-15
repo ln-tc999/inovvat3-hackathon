@@ -1,12 +1,42 @@
+import { useEffect, useState } from "react";
 import { WagmiProvider } from "../../components/WagmiProvider";
 import { useTheme } from "../../lib/useTheme";
+import { useAccount } from "wagmi";
+import { isOnboardingComplete } from "../../lib/db";
 import TopNavBar from "./TopNavBar";
 import TotalPortfolioCard from "./TotalPortfolioCard";
 import YieldOverviewCard from "./YieldOverviewCard";
 import PortfolioCard from "../PortfolioCard";
 
+function LoadingScreen() {
+  return (
+    <div style={{ minHeight: "100vh", background: "var(--bg)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ textAlign: "center" }}>
+        <div style={{ width: 36, height: 36, borderRadius: "50%", border: "3px solid var(--border)", borderTopColor: "var(--accent)", margin: "0 auto 12px", animation: "spin 0.8s linear infinite" }} />
+        <p style={{ fontSize: 14, color: "var(--muted)" }}>Loading...</p>
+      </div>
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+    </div>
+  );
+}
+
 function PortfolioContent() {
   const { isDark, toggle } = useTheme();
+  const { address, isConnected } = useAccount();
+  const [guardChecked, setGuardChecked] = useState(false);
+
+  useEffect(() => {
+    if (!isConnected || !address) {
+      window.location.href = "/onboarding";
+      return;
+    }
+    isOnboardingComplete(address).then((complete) => {
+      if (!complete) window.location.href = "/onboarding";
+      else setGuardChecked(true);
+    });
+  }, [address, isConnected]);
+
+  if (!guardChecked) return <LoadingScreen />;
 
   return (
     <div style={{ background: "var(--bg)", minHeight: "100vh" }}>
