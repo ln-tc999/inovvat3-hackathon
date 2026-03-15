@@ -12,6 +12,7 @@ import RiskLimitCard from "./RiskLimitCard";
 import YieldGoalsCard from "./YieldGoalsCard";
 import ActionHistoryCard from "./ActionHistoryCard";
 import RecentActionsCard from "./RecentActionsCard";
+import DepositCard from "./DepositCard";
 
 function LoadingScreen() {
   return (
@@ -112,8 +113,14 @@ function DashboardContent() {
             <ActionHistoryCard />
           </div>
 
-          {/* Row 4 */}
-          <RecentActionsCard />
+          {/* Row 4: Deposit + Recent Actions */}
+          <div
+            className="grid dash-grid-2 gap-6"
+            style={{ gridTemplateColumns: "1fr 2fr" }}
+          >
+            <DepositCard />
+            <RecentActionsCard />
+          </div>
         </div>
       </main>
     </div>
