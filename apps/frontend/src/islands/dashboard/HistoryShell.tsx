@@ -7,6 +7,7 @@ import TopNavBar from "./TopNavBar";
 import ActionHistoryCard from "./ActionHistoryCard";
 import RecentActionsCard from "./RecentActionsCard";
 import HistoryStatsCard from "./HistoryStatsCard";
+import TxHistoryTable from "./TxHistoryTable";
 
 function LoadingScreen() {
   return (
@@ -72,16 +73,19 @@ function HistoryContent() {
             </p>
           </div>
 
-          {/* Main history table + distribution donut, tuned proportions */}
+          {/* On-chain tx table — full width */}
+          <TxHistoryTable />
+
+          {/* Agent actions + distribution donut */}
           <div
             className="grid dash-grid-2 gap-6"
-            style={{ gridTemplateColumns: "minmax(0, 1.7fr) minmax(0, 1fr)" }}
+            style={{ gridTemplateColumns: "minmax(0, 1.7fr) minmax(0, 1fr)", marginTop: 24 }}
           >
             <RecentActionsCard />
             <ActionHistoryCard />
           </div>
 
-          {/* Compact stats row to keep page dense and consistent with dashboard */}
+          {/* Stats row */}
           <div style={{ marginTop: 24 }}>
             <HistoryStatsCard />
           </div>
