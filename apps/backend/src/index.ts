@@ -4,6 +4,7 @@ import { logger } from "hono/logger";
 import { serve } from "@hono/node-server";
 import { config } from "dotenv";
 import { agentRouter } from "./routes/agent.js";
+import { startAutomation } from "./services/automation.js";
 
 config(); // load .env
 
@@ -27,4 +28,6 @@ export type AppType = typeof app;
 const port = Number(process.env.PORT) || 3001;
 serve({ fetch: app.fetch, port }, () => {
   console.log(`🚀 Backend running at http://localhost:${port}`);
+  // Start 24/7 automation: Chainlink event watcher + cron fallback
+  startAutomation();
 });
