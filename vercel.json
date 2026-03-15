@@ -1,6 +1,5 @@
 {
   "buildCommand": "pnpm --filter @autoyield/frontend build",
-  "outputDirectory": "apps/frontend/dist",
   "installCommand": "corepack enable && corepack prepare pnpm@9.15.0 --activate && pnpm install --no-frozen-lockfile",
   "framework": null
 }
