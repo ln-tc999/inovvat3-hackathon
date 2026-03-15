@@ -51,7 +51,7 @@ function AgentChatInner() {
   // Seed welcome message once
   useEffect(() => {
     if (messages.length > 0) return;
-    const agentName = profile?.agentName ?? "YieldGuard Agent";
+    const agentName = profile?.agentName ?? "Vatiin AI Agent";
     setMessages([{
       id: "welcome",
       role: "agent",
@@ -185,7 +185,7 @@ function AgentChatInner() {
           </div>
           <div>
             <p style={{ fontSize: 14, fontWeight: 600, color: "var(--text)", lineHeight: 1 }}>
-              {profile?.agentName ?? "YieldGuard Agent"}
+              {profile?.agentName ?? "Vatiin AI Agent"}
             </p>
             <p style={{ fontSize: 11, color: status?.active ? "var(--accent-2)" : "var(--muted)", marginTop: 2 }}>
               {status?.active ? "● Active" : "○ Paused"}
