@@ -134,9 +134,11 @@ export const publicClient = createPublicClient({
 });
 
 function getWalletClient() {
-  if (!BACKEND_PRIVATE_KEY) throw new Error("BACKEND_PRIVATE_KEY not set");
-  const account = privateKeyToAccount(BACKEND_PRIVATE_KEY);
-  return createWalletClient({ account, chain: baseSepolia, transport: http(RPC_URL) });
+  const key = process.env.BACKEND_PRIVATE_KEY as `0x${string}` | undefined;
+  if (!key) throw new Error("BACKEND_PRIVATE_KEY not set");
+  const account = privateKeyToAccount(key);
+  const rpc = process.env.RPC_URL_BASE_SEPOLIA ?? "https://sepolia.base.org";
+  return createWalletClient({ account, chain: baseSepolia, transport: http(rpc) });
 }
 
 const ERC20_APPROVE_ABI = [
@@ -210,13 +212,15 @@ export async function executeSupply(
   const walletClient = getWalletClient();
   const assetInfo = SUPPORTED_ASSETS[asset];
   const amount = parseUnits(String(amountHuman), assetInfo.decimals);
-  const adapterAddress = protocol === "aave" ? AAVE_ADAPTER_ADDRESS : MORPHO_ADAPTER_ADDRESS;
+  const aaveAdapter   = (process.env.AAVE_ADAPTER_ADDRESS   ?? "") as Address;
+  const morphoAdapter = (process.env.MORPHO_ADAPTER_ADDRESS ?? "") as Address;
+  const yieldOptimizer = (process.env.YIELD_OPTIMIZER_ADDRESS ?? "") as Address;
+  const adapterAddress = protocol === "aave" ? aaveAdapter : morphoAdapter;
 
-  // Approve adapter to pull tokens from backend wallet (if needed)
   await ensureApproval(walletClient, assetInfo.address, adapterAddress, amount);
 
   const hash = await walletClient.writeContract({
-    address: YIELD_OPTIMIZER_ADDRESS,
+    address: yieldOptimizer,
     abi: YIELD_OPTIMIZER_ABI,
     functionName: "executeManual",
     args: [
@@ -241,10 +245,13 @@ export async function executeWithdraw(
   const walletClient = getWalletClient();
   const assetInfo = SUPPORTED_ASSETS[asset];
   const amount = parseUnits(String(amountHuman), assetInfo.decimals);
-  const adapterAddress = protocol === "aave" ? AAVE_ADAPTER_ADDRESS : MORPHO_ADAPTER_ADDRESS;
+  const aaveAdapter   = (process.env.AAVE_ADAPTER_ADDRESS   ?? "") as Address;
+  const morphoAdapter = (process.env.MORPHO_ADAPTER_ADDRESS ?? "") as Address;
+  const yieldOptimizer = (process.env.YIELD_OPTIMIZER_ADDRESS ?? "") as Address;
+  const adapterAddress = protocol === "aave" ? aaveAdapter : morphoAdapter;
 
   const hash = await walletClient.writeContract({
-    address: YIELD_OPTIMIZER_ADDRESS,
+    address: yieldOptimizer,
     abi: YIELD_OPTIMIZER_ABI,
     functionName: "executeManual",
     args: [
@@ -287,7 +294,12 @@ export async function getOnChainPortfolio(userAddress: Address) {
 
 /**
  * Check if backend wallet is configured
+ * Read directly from process.env to avoid stale module-level captures
  */
 export function isOnChainEnabled(): boolean {
-  return !!(BACKEND_PRIVATE_KEY && YIELD_OPTIMIZER_ADDRESS && AAVE_ADAPTER_ADDRESS);
+  return !!(
+    process.env.BACKEND_PRIVATE_KEY &&
+    process.env.YIELD_OPTIMIZER_ADDRESS &&
+    process.env.AAVE_ADAPTER_ADDRESS
+  );
 }
