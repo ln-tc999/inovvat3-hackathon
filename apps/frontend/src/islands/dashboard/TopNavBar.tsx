@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Bell, Wallet, Sun, Moon } from "lucide-react";
+import { Home, Wallet, Sun, Moon } from "lucide-react";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { useQuery } from "@tanstack/react-query";
 import { getRiskProfile } from "../../lib/db";
@@ -78,26 +78,15 @@ export default function TopNavBar({ onToggle, isDark }: Props) {
           aria-label="Go to home"
           style={{ textDecoration: "none" }}
         >
-          <div
-            style={{
-              width: 32,
-              height: 32,
-              borderRadius: 8,
-              background: "var(--accent)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 11,
-              fontWeight: 700,
-              color: "#fff",
-              flexShrink: 0,
-            }}
-            aria-hidden="true"
-          >
-            GAA
-          </div>
+          <img
+            src="/logo.svg"
+            alt="Vatiin AI"
+            width={28}
+            height={28}
+            style={{ display: "block", flexShrink: 0 }}
+          />
           <span style={{ fontWeight: 700, fontSize: 17, color: "var(--text)" }}>
-            AutoYield Agent
+            Vatiin AI
           </span>
         </a>
 
@@ -178,9 +167,10 @@ export default function TopNavBar({ onToggle, isDark }: Props) {
             {isDark ? <Sun size={16} /> : <Moon size={16} />}
           </button>
 
-          {/* Bell */}
-          <button
-            aria-label="Notifications"
+          {/* Home */}
+          <a
+            href="/"
+            aria-label="Go to landing page"
             className="btn-fill-up"
             style={{
               width: 36,
@@ -193,10 +183,11 @@ export default function TopNavBar({ onToggle, isDark }: Props) {
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
+              textDecoration: "none",
             }}
           >
-            <Bell size={16} />
-          </button>
+            <Home size={16} />
+          </a>
 
           {/* Wallet */}
           {isConnected ? (
