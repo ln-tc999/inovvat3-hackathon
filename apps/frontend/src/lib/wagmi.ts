@@ -3,7 +3,7 @@ import { base, baseSepolia } from "wagmi/chains";
 import { http } from "wagmi";
 
 export const wagmiConfig = getDefaultConfig({
-  appName: "DeFAI YieldGuard",
+  appName: "Vatiin AI",
   // WalletConnect project ID — get free one at https://cloud.walletconnect.com
   // For hackathon/local dev a placeholder still enables injected wallets
   projectId: import.meta.env.PUBLIC_WALLETCONNECT_PROJECT_ID ?? "placeholder",
