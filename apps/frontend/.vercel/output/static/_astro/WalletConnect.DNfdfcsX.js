@@ -1,6 +1,0 @@
-import{c as n,u as o,j as e,W as s,k as i,T as c}from"./en_US-Y4ZOVFV4.Uf0HqiIe.js";import"./index.BgfYDEQg.js";/* empty css                           *//**
- * @license lucide-react v0.395.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */const l=n("LayoutDashboard",[["rect",{width:"7",height:"9",x:"3",y:"3",rx:"1",key:"10lvy0"}],["rect",{width:"7",height:"5",x:"14",y:"3",rx:"1",key:"16une8"}],["rect",{width:"7",height:"9",x:"14",y:"12",rx:"1",key:"1hutg5"}],["rect",{width:"7",height:"5",x:"3",y:"16",rx:"1",key:"ldoo1y"}]]);function d({variant:t="header",redirectToDashboard:a=!1}){const{isConnected:r}=i();return r&&t==="hero"&&a?(typeof window<"u"&&(window.location.href="/dashboard"),null):e.jsxs("div",{className:"flex items-center gap-2",children:[r&&e.jsxs("a",{href:"/dashboard",className:"btn-fill-up inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold",style:{background:"var(--surface-2)",color:"var(--text)",border:"1px solid var(--border)"},children:[e.jsx(l,{size:15}),"Dashboard"]}),e.jsx(c,{label:t==="hero"?"Connect Wallet & Start Earning":"Connect Wallet",showBalance:!1,chainStatus:"none",accountStatus:"avatar"})]})}function f(t){const{isDark:a}=o();return e.jsx(s,{isDark:a,children:e.jsx(d,{...t})})}export{f as default};

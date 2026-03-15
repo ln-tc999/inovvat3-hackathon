@@ -6,6 +6,10 @@ cache/
 .env
 **/.env
 *.env.local
+
+# Build outputs
+**/dist/
+**/.vercel/output/
 pnpm-lock.yaml
 packages/contracts/lib/
 packages/contracts/out/
