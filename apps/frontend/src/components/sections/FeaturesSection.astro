@@ -7,8 +7,8 @@
     <div class="text-center mb-10 sm:mb-14">
       <p class="lp-muted text-xs uppercase tracking-widest mb-4">Features</p>
       <h2 class="lp-text font-black leading-tight" style="font-size: clamp(1.75rem, 4vw, 2.75rem);">
-        Everything You Need.<br/>
-        <span class="lp-accent">Nothing You Don't.</span>
+        Everything Built In.<br/>
+        <span class="lp-accent">Nothing Left Out.</span>
       </h2>
     </div>
 
@@ -16,33 +16,33 @@
       {[
         {
           icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
-          title: "Natural Language Control",
-          desc: "Set your strategy in plain English. No DeFi jargon, no complex UI. Just tell the agent what you want.",
+          title: "Natural Language Instructions",
+          desc: "Type your strategy in plain English — \"Maximize yield with low risk on stablecoins\" — and the agent interprets it via Qwen 3 235B.",
         },
         {
           icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>`,
-          title: "AI-Powered Decisions",
-          desc: "Qwen 2.5 72B analyzes live pool data every 6 hours via Chainlink Functions — verifiable, on-chain, tamper-proof.",
+          title: "Qwen 3 235B AI Engine",
+          desc: "The largest open-weight MoE model analyzes live Aave and Morpho pool data every 6 hours and returns a structured JSON decision with APY, risk score, and reasoning.",
         },
         {
           icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
-          title: "Auto-Rebalance",
-          desc: "Agent automatically migrates funds between Aave V3 and Morpho Blue to chase the best available APY.",
+          title: "Dual 24/7 Automation",
+          desc: "Primary trigger via Chainlink Automation on-chain. Fallback via backend cron job every 6 hours. Both paths run independently — the agent never stops.",
         },
         {
           icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>`,
-          title: "Non-Custodial by Design",
-          desc: "Your funds live in your Safe Smart Account. The agent only has a limited, revocable module permission — never your keys.",
+          title: "Non-Custodial",
+          desc: "Your funds stay in your wallet positions on Aave and Morpho. The backend agent wallet only calls YieldOptimizerCore — it cannot transfer your tokens directly.",
         },
         {
           icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
-          title: "Kill Switch",
-          desc: "Pause or stop the agent instantly from the dashboard. Session keys auto-expire in 30 days regardless.",
+          title: "Kill Switch + Daily Limits",
+          desc: "Pause or stop the agent instantly from the dashboard. AgentPolicy enforces daily USD limits, asset allowlists, and session expiry on-chain.",
         },
         {
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`,
-          title: "On-Chain Policy Validation",
-          desc: "Every action is validated against your policy — daily limits, asset allowlist, and risk tier — before execution.",
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>`,
+          title: "Full Dashboard",
+          desc: "Portfolio overview, yield charts, deposit/withdraw, on-chain transaction history, agent execution log, and auto-upkeep simulator — all in one place.",
         },
       ].map((f) => (
         <div class="lp-card p-5 sm:p-6 flex flex-col gap-4">
