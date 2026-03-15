@@ -1,0 +1,102 @@
+Compiling 3 files with Solc 0.8.28
+Solc 0.8.28 finished in 7.62s
+Compiler run successful!
+Traces:
+  [889214] RedeployCore::run()
+    ├─ [0] VM::envUint("PRIVATE_KEY") [staticcall]
+    │   └─ ← [Return] <env var value>
+    ├─ [0] VM::envOr("BACKEND_WALLET", 0x0000000000000000000000000000000000000000) [staticcall]
+    │   └─ ← [Return] <env var value>
+    ├─ [0] VM::startBroadcast(<pk>)
+    │   └─ ← [Return]
+    ├─ [796647] → new YieldOptimizerCore@0x68026bd66e2310cfb674dF5d171e7811A3A4a5bE
+    │   └─ ← [Return] 3755 bytes of code
+    ├─ [0] console::log("New YieldOptimizerCore:", YieldOptimizerCore: [0x68026bd66e2310cfb674dF5d171e7811A3A4a5bE]) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [24230] YieldOptimizerCore::registerAdapter(0x4071DdCe831E484640e864a8627cc3ece308e895, true)
+    │   ├─ emit AdapterRegistered(adapter: 0x4071DdCe831E484640e864a8627cc3ece308e895, status: true)
+    │   └─ ← [Stop]
+    ├─ [24230] YieldOptimizerCore::registerAdapter(0xf9B035426d2A16EF00F0547dc0F4Ed9226D2671d, true)
+    │   ├─ emit AdapterRegistered(adapter: 0xf9B035426d2A16EF00F0547dc0F4Ed9226D2671d, status: true)
+    │   └─ ← [Stop]
+    ├─ [0] console::log("Adapters registered") [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] VM::stopBroadcast()
+    │   └─ ← [Return]
+    ├─ [0] console::log("---") [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("Update these env vars:") [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("PUBLIC_YIELD_OPTIMIZER_ADDRESS=", YieldOptimizerCore: [0x68026bd66e2310cfb674dF5d171e7811A3A4a5bE]) [staticcall]
+    │   └─ ← [Stop]
+    └─ ← [Return]
+
+
+Script ran successfully.
+
+== Logs ==
+  New YieldOptimizerCore: 0x68026bd66e2310cfb674dF5d171e7811A3A4a5bE
+  Adapters registered
+  ---
+  Update these env vars:
+  PUBLIC_YIELD_OPTIMIZER_ADDRESS= 0x68026bd66e2310cfb674dF5d171e7811A3A4a5bE
+
+## Setting up 1 EVM.
+==========================
+Simulated On-chain Traces:
+
+  [796647] → new YieldOptimizerCore@0x68026bd66e2310cfb674dF5d171e7811A3A4a5bE
+    └─ ← [Return] 3755 bytes of code
+
+  [26230] YieldOptimizerCore::registerAdapter(0x4071DdCe831E484640e864a8627cc3ece308e895, true)
+    ├─ emit AdapterRegistered(adapter: 0x4071DdCe831E484640e864a8627cc3ece308e895, status: true)
+    └─ ← [Stop]
+
+  [26230] YieldOptimizerCore::registerAdapter(0xf9B035426d2A16EF00F0547dc0F4Ed9226D2671d, true)
+    ├─ emit AdapterRegistered(adapter: 0xf9B035426d2A16EF00F0547dc0F4Ed9226D2671d, status: true)
+    └─ ← [Stop]
+
+
+==========================
+
+Chain 84532
+
+Estimated gas price: 0.011 gwei
+
+Estimated total gas used for script: 1321160
+
+Estimated amount required: 0.00001453276 ETH
+
+==========================
+
+
+==========================
+
+ONCHAIN EXECUTION COMPLETE & SUCCESSFUL.
+##
+Start verification for (1) contracts
+Start verifying contract `0x68026bd66e2310cfb674dF5d171e7811A3A4a5bE` deployed on base-sepolia
+EVM version: prague
+Compiler version: 0.8.28
+Optimizations:    200
+Constructor args: 000000000000000000000000a6ba2cf98b043ea522650535b56be9be46371f88000000000000000000000000e16df59b887e3caa439e0b29b42ba2e7976fd8b2000000000000000000000000d3029585c3934323743ee7740e67dcde99df9802
+
+Submitting verification for [src/YieldOptimizerCore.sol:YieldOptimizerCore] 0x68026bd66e2310cfb674dF5d171e7811A3A4a5bE.
+Submitted contract for verification:
+	Response: `OK`
+	GUID: `f1blqe3rmrl6e2q4qt9h7xnqhif1xavizxf39rrwf2zzdtg7ai`
+	URL: https://sepolia.basescan.org/address/0x68026bd66e2310cfb674df5d171e7811a3a4a5be
+Contract verification status:
+Response: `NOTOK`
+Details: `Pending in queue`
+Warning: Verification is still pending...; waiting 15 seconds before trying again (7 tries remaining)
+Contract verification status:
+Response: `OK`
+Details: `Pass - Verified`
+Contract successfully verified
+All (1) contracts were verified!
+
+Transactions saved to: /Users/em/web/vatiin-hackathon/packages/contracts/broadcast/RedeployCore.s.sol/84532/run-latest.json
+
+Sensitive values saved to: /Users/em/web/vatiin-hackathon/packages/contracts/cache/RedeployCore.s.sol/84532/run-latest.json
+
