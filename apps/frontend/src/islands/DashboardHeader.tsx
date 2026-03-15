@@ -36,8 +36,8 @@ function DashboardHeaderInner() {
       <div className="max-w-6xl mx-auto flex items-center justify-between gap-4">
         {/* Brand */}
         <a href="/" className="flex items-center gap-2 shrink-0" aria-label="Go to home">
-          <span className="text-cyan-400 font-bold text-lg">DeFAI</span>
-          <span className="dark:text-white font-bold text-lg hidden sm:block">YieldGuard</span>
+          <span className="text-cyan-400 font-bold text-lg">Vatiin</span>
+          <span className="dark:text-white font-bold text-lg hidden sm:block">AI</span>
         </a>
 
         {/* Center stats */}
