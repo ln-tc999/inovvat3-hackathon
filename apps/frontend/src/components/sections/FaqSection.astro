@@ -2,27 +2,31 @@
 const faqs = [
   {
     q: "Is my money safe? Who controls my funds?",
-    a: "You do. Your funds live in your own Safe Smart Account — a battle-tested ERC-4337 smart wallet. The agent only has a limited module permission to execute pre-approved actions. You can revoke it or hit the kill switch at any time.",
+    a: "Your funds stay in your wallet positions on Aave and Morpho — the agent never holds them. The backend agent wallet can only call YieldOptimizerCore to supply or withdraw on your behalf. You can pause or kill the agent from the dashboard at any time.",
   },
   {
     q: "What happens if the AI makes a bad decision?",
-    a: "Every LLM output is schema-validated before execution. On top of that, your AgentPolicy contract enforces daily limits, an asset allowlist, and a risk tier cap on-chain. The agent literally cannot exceed your defined boundaries.",
+    a: "Every LLM output is schema-validated before any on-chain call. AgentPolicy enforces daily USD limits, an asset allowlist, and a risk tier cap on-chain. If the LLM response is malformed, the system falls back to a safe mock decision and logs the error — no transaction is sent.",
   },
   {
     q: "Which assets and protocols are supported?",
-    a: "Currently USDC and DAI on Aave V3 and Morpho Blue, both on Base. More assets and protocols are on the roadmap for mainnet launch.",
+    a: "Currently USDC and WETH on Aave V3 (mock) and Morpho Blue on Base Sepolia testnet. The mock stack uses MockUSDC and MockAavePool so you can test the full flow without real funds.",
   },
   {
-    q: "How often does the agent rebalance?",
-    a: "Every 6 hours, triggered automatically by Chainlink Automation. The agent only moves funds if the APY difference justifies the gas cost — it won't rebalance for marginal gains.",
+    q: "How does the 24/7 automation actually work?",
+    a: "Two independent paths: Chainlink Automation calls performUpkeep() on AutoYieldConsumer.sol every 6 hours, which emits an event the backend listens to. Separately, a node-cron job runs on the Railway backend every 6 hours as a fallback. Both paths call the same LLM and executeManual flow.",
   },
   {
-    q: "Do I need to know DeFi to use this?",
-    a: "No. You just type what you want — e.g. \"Maximize yield, keep risk below 5\" — and the agent handles everything. No protocol knowledge required.",
+    q: "How do I get test USDC to try it?",
+    a: "Click the 'Get 1000 test USDC' button in the Deposit card on the dashboard. The backend mints MockUSDC directly to your wallet address on Base Sepolia — no faucet website needed.",
   },
   {
-    q: "Is this audited? Is it production-ready?",
-    a: "This is currently a hackathon MVP running on Base Sepolia testnet. Smart contract audit is planned before mainnet launch. Do not use with real funds until the audit is complete.",
+    q: "What AI model powers the decisions?",
+    a: "Qwen 3 235B A22B — a 235-billion parameter Mixture-of-Experts model from Alibaba, accessed via DashScope Singapore. It receives live pool data (APYs, TVL, utilization) and your instruction, then returns a structured JSON decision with protocol, action, amount, risk score, and reasoning.",
+  },
+  {
+    q: "Is this production-ready?",
+    a: "This is a hackathon MVP on Base Sepolia testnet. The mock stack (MockUSDC, MockAavePool) simulates real Aave behavior. Smart contract audit and mainnet deployment are planned before any real-fund usage.",
   },
 ];
 ---
@@ -40,8 +44,7 @@ const faqs = [
     <div class="flex flex-col gap-2 sm:gap-3">
       {faqs.map((faq) => (
         <details class="lp-card group overflow-hidden">
-          <summary class="flex items-center justify-between px-5 sm:px-6 py-4 sm:py-5 cursor-pointer list-none select-none transition-colors"
-            style="hover:background: var(--surface-2);">
+          <summary class="flex items-center justify-between px-5 sm:px-6 py-4 sm:py-5 cursor-pointer list-none select-none">
             <span class="lp-text font-medium text-sm pr-4">{faq.q}</span>
             <svg
               class="shrink-0 w-4 h-4 lp-muted transition-transform duration-200 group-open:rotate-45"
