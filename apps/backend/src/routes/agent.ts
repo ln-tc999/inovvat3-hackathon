@@ -3,6 +3,7 @@ import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 import { dashscopeLLMDecision } from "../services/dashscopeLLM.js";
 import { runMockUpkeep, DEFAULT_PORTFOLIO } from "../services/yieldOptimizer.js";
+import { generateRiskProfile } from "../services/profileGenerator.js";
 import type { AgentStatus } from "../types.js";
 
 export const agentRouter = new Hono();
@@ -99,3 +100,22 @@ agentRouter.post("/mock-upkeep", async (c) => {
     newAPY: result.newAPY,
   });
 });
+
+// ── POST /api/agent/generate-profile ─────────────────────────────────────────
+const generateProfileSchema = z.object({
+  riskTier:        z.enum(["conservative", "moderate", "aggressive"]),
+  preferredAssets: z.array(z.string()).min(1),
+  timeHorizon:     z.enum(["short", "medium", "long"]),
+  yieldTarget:     z.number().min(1).max(50),
+  walletAddress:   z.string().optional(),
+});
+
+agentRouter.post(
+  "/generate-profile",
+  zValidator("json", generateProfileSchema),
+  async (c) => {
+    const body = c.req.valid("json");
+    const profile = await generateRiskProfile(body);
+    return c.json(profile);
+  }
+);
