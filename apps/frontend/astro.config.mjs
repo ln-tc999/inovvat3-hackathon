@@ -13,5 +13,15 @@ export default defineConfig({
     optimizeDeps: {
       include: ["react", "react-dom", "wagmi", "viem", "recharts"],
     },
+    ssr: {
+      noExternal: [
+        "@rainbow-me/rainbowkit",
+        "@vanilla-extract/sprinkles",
+        "@vanilla-extract/css",
+        "@vanilla-extract/dynamic",
+        "wagmi",
+        "viem",
+      ],
+    },
   },
 });
