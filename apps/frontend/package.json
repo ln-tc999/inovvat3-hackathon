@@ -13,7 +13,7 @@
     "@astrojs/node": "^8.3.4",
     "@astrojs/react": "^3.6.0",
     "@astrojs/tailwind": "^5.1.0",
-    "@autoyield/backend": "workspace:*",
+    "@astrojs/vercel": "^8.0.0",
     "@hookform/resolvers": "^3.6.0",
     "@rainbow-me/rainbowkit": "^2.2.10",
     "@tabler/icons-react": "^3.40.0",
