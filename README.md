@@ -1,8 +1,27 @@
-# DeFAI YieldGuard
+# Vatiin AI
+
+<div align="center">
+  <img src="apps/frontend/public/header-readme.png" alt="Vatiin AI" width="100%" />
+</div>
+
+<div align="center">
+
+![Base](https://img.shields.io/badge/Base-0052FF?style=flat&logo=coinbase&logoColor=white)
+![Solidity](https://img.shields.io/badge/Solidity-363636?style=flat&logo=solidity&logoColor=white)
+![Chainlink](https://img.shields.io/badge/Chainlink-375BD2?style=flat&logo=chainlink&logoColor=white)
+![Aave](https://img.shields.io/badge/Aave-B6509E?style=flat&logo=aave&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
+![Astro](https://img.shields.io/badge/Astro-FF5D01?style=flat&logo=astro&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=black)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=nodedotjs&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat&logo=vercel&logoColor=white)
+![Railway](https://img.shields.io/badge/Railway-0B0D0E?style=flat&logo=railway&logoColor=white)
+
+</div>
 
 > Your AI Agent that earns yield 24/7 while you sleep — anywhere in the world.
 
-DeFAI YieldGuard is a non-custodial autonomous DeFi yield optimization agent deployed on Base. Users set a plain-English instruction once. The agent — powered by Qwen 3 235B via Alibaba DashScope — continuously analyzes yield opportunities across Aave V3 and Morpho Blue, then executes rebalancing actions on-chain every 6 hours via Chainlink Automation.
+Vatiin AI is a non-custodial autonomous DeFi yield optimization agent deployed on Base. Users set a plain-English instruction once. The agent — powered by Qwen 3 235B via Alibaba DashScope — continuously analyzes yield opportunities across Aave V3 and Morpho Blue, then executes rebalancing actions on-chain every 6 hours via Chainlink Automation.
 
 Live demo: https://vatinn-ai.vercel.app
 Backend API: https://autoyieldbackend-production.up.railway.app
