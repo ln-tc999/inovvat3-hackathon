@@ -12,6 +12,18 @@ export interface AgentHistoryEntry {
   profitUSD: number;
 }
 
+export interface TxHistoryEntry {
+  id?: number;
+  timestamp: number;
+  type: "deposit" | "withdraw";
+  asset: string;
+  amount: number;
+  protocol: string;
+  txHash: string;
+  status: "success" | "failed";
+  userAddress: string;
+}
+
 export interface UserPrefs {
   id?: number;
   key: string;
@@ -49,6 +61,7 @@ class YieldGuardDB extends Dexie {
   prefs!: Table<UserPrefs>;
   snapshots!: Table<ProfitSnapshot>;
   riskProfiles!: Table<RiskProfile>;
+  txHistory!: Table<TxHistoryEntry>;
 
   constructor() {
     super("YieldGuardDB");
@@ -57,12 +70,19 @@ class YieldGuardDB extends Dexie {
       prefs:     "++id, key",
       snapshots: "++id, date",
     });
-    // v2: add riskProfiles
     this.version(2).stores({
       history:      "++id, timestamp",
       prefs:        "++id, key",
       snapshots:    "++id, date",
       riskProfiles: "++id, walletAddress",
+    });
+    // v3: add on-chain tx history
+    this.version(3).stores({
+      history:      "++id, timestamp",
+      prefs:        "++id, key",
+      snapshots:    "++id, date",
+      riskProfiles: "++id, walletAddress",
+      txHistory:    "++id, timestamp, userAddress, type",
     });
   }
 }
@@ -101,7 +121,7 @@ export async function getPref(key: string): Promise<string | null> {
   return row?.value ?? null;
 }
 
-// ── Risk Profile ──────────────────────────────────────────────────────────────
+// ── Risk Profile ───────────────────────────────────────────────────────────────
 export async function getRiskProfile(walletAddress: string): Promise<RiskProfile | null> {
   const row = await db.riskProfiles.where("walletAddress").equals(walletAddress.toLowerCase()).first();
   return row ?? null;
@@ -120,4 +140,21 @@ export async function saveRiskProfile(profile: Omit<RiskProfile, "id">): Promise
 export async function isOnboardingComplete(walletAddress: string): Promise<boolean> {
   const profile = await getRiskProfile(walletAddress);
   return profile?.onboardingComplete ?? false;
+}
+
+// ── Tx History ────────────────────────────────────────────────────────────────
+export async function addTxHistory(entry: Omit<TxHistoryEntry, "id">) {
+  return db.txHistory.add(entry);
+}
+
+export async function getTxHistory(userAddress: string, limit = 50) {
+  return db.txHistory
+    .where("userAddress").equals(userAddress.toLowerCase())
+    .reverse()
+    .sortBy("timestamp")
+    .then((rows) => rows.slice(0, limit));
+}
+
+export async function getAllTxHistory(limit = 50) {
+  return db.txHistory.orderBy("timestamp").reverse().limit(limit).toArray();
 }
