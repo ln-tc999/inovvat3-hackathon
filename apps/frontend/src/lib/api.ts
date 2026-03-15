@@ -57,6 +57,24 @@ async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+export interface GenerateProfileRequest {
+  riskTier:        "conservative" | "moderate" | "aggressive";
+  preferredAssets: string[];
+  timeHorizon:     "short" | "medium" | "long";
+  yieldTarget:     number;
+  walletAddress?:  string;
+}
+
+export interface GenerateProfileResponse {
+  agentName:            string;
+  agentPersonality:     string;
+  generatedInstruction: string;
+  maxRisk:              number;
+  dailyLimitUSD:        number;
+  suggestedAPY:         number;
+  reasoning:            string;
+}
+
 export const apiClient = {
   setInstruction: (body: { instruction: string; maxRisk?: number; userAddress?: string }) =>
     apiFetch<SetInstructionResponse>("/agent/set-instruction", {
@@ -74,4 +92,10 @@ export const apiClient = {
 
   mockUpkeep: () =>
     apiFetch<MockUpkeepResponse>("/agent/mock-upkeep", { method: "POST" }),
+
+  generateProfile: (body: GenerateProfileRequest) =>
+    apiFetch<GenerateProfileResponse>("/agent/generate-profile", {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
 };
