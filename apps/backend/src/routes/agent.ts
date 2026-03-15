@@ -4,6 +4,7 @@ import { z } from "zod";
 import { dashscopeLLMDecision } from "../services/dashscopeLLM.js";
 import { runMockUpkeep, DEFAULT_PORTFOLIO } from "../services/yieldOptimizer.js";
 import { generateRiskProfile } from "../services/profileGenerator.js";
+import { setAutomationInstruction, setAutomationActive } from "../services/automation.js";
 import type { AgentStatus } from "../types.js";
 
 export const agentRouter = new Hono();
@@ -51,6 +52,10 @@ agentRouter.post(
       currentAPY: decision.suggestedAPY,
     };
 
+    // Sync to automation service so cron/chainlink use latest instruction
+    setAutomationInstruction(instruction);
+    setAutomationActive(true);
+
     return c.json({
       success: true,
       agentId: agentState.agentId,
@@ -70,6 +75,7 @@ agentRouter.get("/status", (c) => {
 agentRouter.post("/pause", zValidator("json", pauseSchema), (c) => {
   const { active } = c.req.valid("json");
   agentState = { ...agentState, active };
+  setAutomationActive(active);
   return c.json({ success: true, active });
 });
 
@@ -193,6 +199,18 @@ agentRouter.get("/portfolio/:address", async (c) => {
 
   const positions = await getOnChainPortfolio(address);
   return c.json({ onChain: true, positions });
+});
+
+// ── GET /api/agent/automation-status ─────────────────────────────────────────
+agentRouter.get("/automation-status", (c) => {
+  const schedule = process.env.CRON_SCHEDULE ?? "0 */6 * * *";
+  return c.json({
+    chainlinkWatcher: !!process.env.AUTO_YIELD_CONSUMER_ADDRESS,
+    cronSchedule: schedule,
+    onChainEnabled: !!(process.env.BACKEND_PRIVATE_KEY && process.env.YIELD_OPTIMIZER_ADDRESS),
+    agentActive: agentState.active,
+    consumerAddress: process.env.AUTO_YIELD_CONSUMER_ADDRESS ?? null,
+  });
 });
 
 // ── POST /api/agent/faucet ────────────────────────────────────────────────────
