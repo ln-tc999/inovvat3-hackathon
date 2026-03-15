@@ -138,7 +138,7 @@ export async function saveRiskProfile(profile: Omit<RiskProfile, "id">): Promise
 }
 
 export async function isOnboardingComplete(walletAddress: string): Promise<boolean> {
-  const profile = await getRiskProfile(walletAddress);
+  const profile = await getRiskProfile(walletAddress.toLowerCase());
   return profile?.onboardingComplete ?? false;
 }
 
