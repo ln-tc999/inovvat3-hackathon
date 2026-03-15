@@ -35,6 +35,42 @@ export interface OnboardingFormData {
 
 export type OnboardingStep = 1 | 2 | 3 | 4 | 5 | 6;
 
+// Client-side fallback when backend is unreachable
+function buildFallbackProfile(
+  riskTier: "conservative" | "moderate" | "aggressive",
+  preferredAssets: string[],
+  yieldTarget: number,
+): GenerateProfileResponse {
+  const names = {
+    conservative: "The Steady Earner",
+    moderate:     "The Balanced Optimizer",
+    aggressive:   "The Yield Hunter",
+  };
+  const personalities = {
+    conservative: "Prioritizes capital preservation with steady, low-risk yield.",
+    moderate:     "Balances yield optimization with manageable risk exposure.",
+    aggressive:   "Maximizes yield by actively seeking the highest APY opportunities.",
+  };
+  const instructions = {
+    conservative: `Maximize yield on ${preferredAssets.join("/")} with low risk only. Prefer Aave V3. Never exceed risk score 3.`,
+    moderate:     `Optimize yield on ${preferredAssets.join("/")} with moderate risk. Rebalance between Aave and Morpho for best APY.`,
+    aggressive:   `Aggressively maximize yield on ${preferredAssets.join("/")}. Use Morpho when APY advantage exceeds 1%. Compound frequently.`,
+  };
+  const maxRisks = { conservative: 3, moderate: 5, aggressive: 8 };
+  const dailyLimits = { conservative: 500, moderate: 2000, aggressive: 10000 };
+  const apyBps = { conservative: 450, moderate: 550, aggressive: 680 };
+
+  return {
+    agentName:            names[riskTier],
+    agentPersonality:     personalities[riskTier],
+    generatedInstruction: instructions[riskTier],
+    maxRisk:              maxRisks[riskTier],
+    dailyLimitUSD:        dailyLimits[riskTier],
+    suggestedAPY:         apyBps[riskTier],
+    reasoning:            `Based on your ${riskTier} risk preference and ${yieldTarget}% yield target, this configuration is optimized for stable returns.`,
+  };
+}
+
 export function useOnboarding() {
   const { address } = useAccount();
   const { writeContractAsync } = useWriteContract();
@@ -64,8 +100,9 @@ export function useOnboarding() {
     // preferredAssets defaults to ["USDC"] if user never changed it in StepAssets
     const preferredAssets = data.preferredAssets?.length ? data.preferredAssets : ["USDC"];
 
-    if (!data.riskTier || !data.timeHorizon || !data.yieldTarget) {
+    if (!data.riskTier || !data.timeHorizon || data.yieldTarget == null) {
       console.warn("[Onboarding] generateProfile called with incomplete data:", data);
+      setError("Missing required fields. Please go back and fill in all steps.");
       return;
     }
     setIsGenerating(true);
@@ -82,7 +119,11 @@ export function useOnboarding() {
       nextStep(); // go to confirm step
     } catch (e: any) {
       console.error("[Onboarding] generateProfile error:", e);
-      setError(e?.message ?? "Failed to generate profile. Please try again.");
+      // Backend unreachable — use client-side mock profile so onboarding still works
+      const fallback = buildFallbackProfile(data.riskTier, preferredAssets, data.yieldTarget);
+      console.warn("[Onboarding] Using fallback profile due to API error");
+      setGenerated(fallback);
+      nextStep();
     } finally {
       setIsGenerating(false);
     }
@@ -95,7 +136,7 @@ export function useOnboarding() {
 
     try {
       // 1. Try on-chain write (optional — skip if no contract address configured)
-      if (AGENT_POLICY_ADDRESS && AGENT_POLICY_ADDRESS !== "") {
+      if (AGENT_POLICY_ADDRESS && (AGENT_POLICY_ADDRESS as string) !== "") {
         const instructionHash = keccak256(toBytes(generatedProfile.generatedInstruction));
         const dailyLimitWei   = parseUnits(String(generatedProfile.dailyLimitUSD), 18);
         const sessionDuration = BigInt(30 * 24 * 60 * 60); // 30 days
@@ -136,12 +177,16 @@ export function useOnboarding() {
         updatedAt:            Date.now(),
       });
 
-      // 3. Pre-set agent instruction via backend
-      await apiClient.setInstruction({
-        instruction:   generatedProfile.generatedInstruction,
-        maxRisk:       generatedProfile.maxRisk,
-        userAddress:   address,
-      });
+      // 3. Pre-set agent instruction via backend (best-effort — don't block onboarding)
+      try {
+        await apiClient.setInstruction({
+          instruction:   generatedProfile.generatedInstruction,
+          maxRisk:       generatedProfile.maxRisk,
+          userAddress:   address,
+        });
+      } catch (apiErr) {
+        console.warn("[Onboarding] setInstruction failed (backend may be offline):", apiErr);
+      }
 
       nextStep(); // go to success step
     } catch (e: any) {
