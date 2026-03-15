@@ -7,37 +7,38 @@ import WalletConnect from "../../islands/WalletConnect";
   <!-- badge -->
   <div class="lp-badge inline-flex items-center gap-2 px-4 py-1.5 text-xs font-medium mb-6 sm:mb-8">
     <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background: var(--accent);"></span>
-    <span style="color: var(--accent);">Live on Base Sepolia Testnet</span>
+    <span style="color: var(--accent);">Live on Base Sepolia — Testnet</span>
   </div>
 
   <!-- headline -->
   <h1 class="lp-text font-black max-w-4xl mx-auto leading-[1.05] tracking-tight"
     style="font-size: clamp(2.25rem, 6vw, 5rem);">
-    The Premier AI Yield Agent<br/>
-    <span class="lp-accent">for DeFi on Base</span>
+    Your AI Agent That Earns<br/>
+    <span class="lp-accent">Yield 24/7 While You Sleep</span>
   </h1>
 
   <p class="lp-muted mt-5 sm:mt-6 max-w-xl mx-auto leading-relaxed"
     style="font-size: clamp(0.95rem, 1.5vw, 1.125rem);">
-    Non-custodial AI agent. Set your strategy once in plain English.
-    Agent auto-optimizes yield across Aave &amp; Morpho — 24/7.
+    Set your strategy once in plain English. Vatiin AI autonomously
+    optimizes yield across Aave V3 and Morpho Blue on Base — powered by
+    Qwen 3 235B and Chainlink Automation.
   </p>
 
   <!-- CTAs -->
   <div class="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-    <WalletConnect client:load variant="hero" redirectToDashboard={true} />
-    <a href="#about" class="btn-fill-up lp-badge px-6 py-3 text-sm font-medium">
-      Learn more
+    <WalletConnect client:load variant="hero" />
+    <a href="#how-it-works" class="btn-fill-up lp-badge px-6 py-3 text-sm font-medium">
+      How it works
     </a>
   </div>
 
   <!-- stats -->
   <div class="mt-12 sm:mt-16 lg:mt-20 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 w-full max-w-3xl mx-auto pb-10">
     {[
-      { value: "Up to 12%",     label: "APY on stablecoins" },
+      { value: "4.5% APY",      label: "Aave V3 USDC (live)" },
       { value: "6h",            label: "Auto-rebalance cycle" },
-      { value: "Non-custodial", label: "You keep control" },
-      { value: "24/7",          label: "Autonomous AI agent" },
+      { value: "Non-custodial", label: "You keep your keys" },
+      { value: "24/7",          label: "Chainlink + Cron automation" },
     ].map((s) => (
       <div class="lp-card px-3 sm:px-4 py-4 sm:py-5 text-center">
         <p class="lp-accent font-bold" style="font-size: clamp(0.95rem, 2vw, 1.25rem);">{s.value}</p>
