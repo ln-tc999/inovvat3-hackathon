@@ -7,23 +7,24 @@
     <div class="text-center mb-10 sm:mb-14">
       <p class="lp-muted text-xs uppercase tracking-widest mb-4">About</p>
       <h2 class="lp-text font-black leading-tight" style="font-size: clamp(1.75rem, 4vw, 2.75rem);">
-        Yield Optimization With YieldGuard Isn't<br/>
-        <span class="lp-accent">Passive. It's Autonomous.</span>
+        DeFi Yield Optimization That<br/>
+        <span class="lp-accent">Actually Runs Itself</span>
       </h2>
       <p class="lp-muted mt-5 max-w-2xl mx-auto leading-relaxed"
         style="font-size: clamp(0.875rem, 1.25vw, 1rem);">
-        Most DeFi users leave money on the table — APYs shift hourly across protocols.
-        YieldGuard's AI agent monitors, decides, and executes rebalances on-chain
-        while you do literally anything else.
+        APYs across Aave and Morpho shift every few hours. Most users never notice —
+        and leave yield on the table. Vatiin AI deploys a personal AI agent
+        that monitors, decides, and executes rebalances on-chain around the clock,
+        without ever touching your private keys.
       </p>
     </div>
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5">
       {[
-        { value: "6h",   label: "Rebalance interval",  sub: "Chainlink Automation" },
-        { value: "<9s",  label: "LLM decision time",   sub: "Chainlink Functions" },
-        { value: "2",    label: "Protocols supported", sub: "Aave V3 + Morpho Blue" },
-        { value: "100%", label: "Non-custodial",       sub: "Safe Smart Account" },
+        { value: "6h",        label: "Rebalance interval",    sub: "Chainlink Automation" },
+        { value: "235B",      label: "LLM parameters",        sub: "Qwen 3 MoE via DashScope" },
+        { value: "2",         label: "Protocols supported",   sub: "Aave V3 + Morpho Blue" },
+        { value: "Base",      label: "Chain",                 sub: "Low gas, fast finality" },
       ].map((m) => (
         <div class="lp-card p-5 sm:p-6">
           <p class="lp-text font-black" style="font-size: clamp(1.75rem, 4vw, 2.5rem);">{m.value}</p>
