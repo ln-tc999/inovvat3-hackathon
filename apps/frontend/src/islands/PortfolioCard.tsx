@@ -2,70 +2,81 @@ import { useQuery } from "@tanstack/react-query";
 import { TrendingUp, RefreshCw, AlertCircle } from "lucide-react";
 import { apiClient, type PortfolioPosition } from "../lib/api";
 import { WagmiProvider } from "../components/WagmiProvider";
-import { STRINGS } from "../lib/strings";
+import { useTheme } from "../lib/useTheme";
 
 const PROTOCOL_COLORS: Record<string, string> = {
-  Aave:   "text-purple-400 bg-purple-900/20 border-purple-800",
-  Morpho: "text-blue-400 bg-blue-900/20 border-blue-800",
+  Aave:   "var(--accent)",
+  Morpho: "#818cf8",
 };
 
 function PortfolioTable({ positions }: { positions: PortfolioPosition[] }) {
   if (positions.length === 0) {
     return (
-      <div className="text-center py-12 text-slate-500">
-        <AlertCircle size={32} className="mx-auto mb-3 opacity-40" aria-hidden="true" />
-        <p>No active positions. Set an instruction to start earning.</p>
+      <div style={{ textAlign: "center", padding: "32px 0" }}>
+        <AlertCircle size={28} style={{ color: "var(--muted)", margin: "0 auto 10px" }} />
+        <p style={{ fontSize: 14, color: "var(--muted)" }}>No active positions.</p>
+        <p style={{ fontSize: 13, color: "var(--muted)", marginTop: 4 }}>
+          Deposit USDC or WETH to start earning yield.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="overflow-x-auto -mx-5">
-      <table className="w-full text-sm" role="table" aria-label="Portfolio positions">
+    <div style={{ overflowX: "auto", margin: "0 -4px" }}>
+      <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }} role="table" aria-label="Portfolio positions">
         <thead>
-          <tr className="border-b border-slate-200 dark:border-slate-700">
+          <tr>
             {["Asset", "Amount", "APY", "Protocol", "Yield Today"].map((h) => (
-              <th
-                key={h}
-                scope="col"
-                className="px-5 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider"
-              >
+              <th key={h} scope="col" style={{
+                padding: "8px 12px", textAlign: "left",
+                fontSize: 11, fontWeight: 600, color: "var(--muted)",
+                textTransform: "uppercase", letterSpacing: "0.06em",
+                borderBottom: "1px solid var(--border)",
+              }}>
                 {h}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-200 dark:divide-slate-700/50">
+        <tbody>
           {positions.map((pos, i) => (
-            <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-              <td className="px-5 py-4 font-medium text-slate-900 dark:text-white">
-                <div>
-                  <p className="font-semibold">{pos.symbol}</p>
-                  <p className="text-xs text-slate-400">{pos.asset}</p>
-                </div>
+            <tr key={i} style={{ borderBottom: i < positions.length - 1 ? "1px solid var(--border)" : "none" }}>
+              <td style={{ padding: "14px 12px" }}>
+                <p style={{ fontWeight: 600, color: "var(--text)" }}>{pos.symbol}</p>
+                <p style={{ fontSize: 11, color: "var(--muted)", marginTop: 2, fontFamily: "monospace" }}>
+                  {pos.asset.slice(0, 6)}…{pos.asset.slice(-4)}
+                </p>
               </td>
-              <td className="px-5 py-4 text-slate-700 dark:text-slate-300">
-                <div>
-                  <p>{pos.amount.toLocaleString("en-US", { minimumFractionDigits: 2 })}</p>
-                  <p className="text-xs text-slate-400">
-                    ${pos.amountUSD.toLocaleString("en-US", { minimumFractionDigits: 2 })}
-                  </p>
-                </div>
+              <td style={{ padding: "14px 12px" }}>
+                <p style={{ color: "var(--text)", fontWeight: 500 }}>
+                  {pos.amount.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                </p>
+                <p style={{ fontSize: 11, color: "var(--muted)", marginTop: 2 }}>
+                  ${pos.amountUSD.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                </p>
               </td>
-              <td className="px-5 py-4">
-                <span className="text-cyan-400 font-semibold">
+              <td style={{ padding: "14px 12px" }}>
+                <span style={{ color: "var(--accent-2)", fontWeight: 600 }}>
                   {(pos.apy / 100).toFixed(2)}%
                 </span>
               </td>
-              <td className="px-5 py-4">
-                <span
-                  className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border ${PROTOCOL_COLORS[pos.protocol] ?? ""}`}
-                >
+              <td style={{ padding: "14px 12px" }}>
+                <span style={{
+                  display: "inline-flex", alignItems: "center",
+                  padding: "3px 10px", borderRadius: 9999,
+                  fontSize: 11, fontWeight: 500,
+                  border: `1px solid ${PROTOCOL_COLORS[pos.protocol] ?? "var(--border)"}`,
+                  color: PROTOCOL_COLORS[pos.protocol] ?? "var(--muted)",
+                  background: "var(--surface-2)",
+                }}>
                   {pos.protocol}
                 </span>
               </td>
-              <td className="px-5 py-4 text-emerald-400 font-medium">
-                +${pos.yieldEarnedToday.toFixed(4)}
+              <td style={{ padding: "14px 12px" }}>
+                <span style={{ color: "#22c55e", fontWeight: 600 }}>
+                  +${pos.yieldEarnedToday.toFixed(4)}
+                </span>
               </td>
             </tr>
           ))}
@@ -83,46 +94,52 @@ function PortfolioCardInner() {
   });
 
   return (
-    <section className="card" aria-labelledby="portfolio-heading">
-      <div className="flex items-center justify-between mb-5">
+    <div className="d-card" style={{ height: "100%" }}>
+      <div className="flex items-center justify-between" style={{ marginBottom: 20 }}>
         <div className="flex items-center gap-2">
-          <TrendingUp size={18} className="text-cyan-400" aria-hidden="true" />
-          <h2 id="portfolio-heading" className="font-semibold text-slate-900 dark:text-white">
-            {STRINGS.portfolioSection}
-          </h2>
+          <TrendingUp size={16} style={{ color: "var(--accent)" }} />
+          <p style={{ fontSize: 16, fontWeight: 700, color: "var(--text)" }}>Current Positions</p>
         </div>
         <button
           onClick={() => refetch()}
           disabled={isFetching}
-          className="btn-fill-up d-badge"
-          style={{ cursor: "pointer", padding: "6px 8px" }}
+          className="d-btn d-btn-default"
+          style={{ height: 32, padding: "0 10px", fontSize: 12 }}
           aria-label="Refresh portfolio"
         >
-          <RefreshCw size={14} className={isFetching ? "animate-spin" : ""} aria-hidden="true" />
+          <RefreshCw size={13} className={isFetching ? "animate-spin" : ""} />
+          Refresh
         </button>
       </div>
 
       {isLoading ? (
-        <div className="space-y-3" aria-label="Loading portfolio" aria-busy="true">
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {[1, 2].map((i) => (
-            <div key={i} className="h-14 bg-slate-100 dark:bg-slate-700/50 rounded-lg animate-pulse" />
+            <div key={i} style={{
+              height: 56, borderRadius: 10,
+              background: "var(--surface-2)",
+              animation: "pulse 1.5s ease-in-out infinite",
+            }} />
           ))}
         </div>
       ) : isError ? (
-        <div className="flex items-center gap-2 text-red-400 text-sm py-4">
-          <AlertCircle size={16} aria-hidden="true" />
-          {STRINGS.errorFetch}
+        <div style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--danger)", fontSize: 13, padding: "16px 0" }}>
+          <AlertCircle size={16} />
+          Failed to fetch portfolio data.
         </div>
       ) : (
         <PortfolioTable positions={data?.portfolio ?? []} />
       )}
-    </section>
+
+      <style>{`@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }`}</style>
+    </div>
   );
 }
 
 export default function PortfolioCard() {
+  const { isDark } = useTheme();
   return (
-    <WagmiProvider>
+    <WagmiProvider isDark={isDark}>
       <PortfolioCardInner />
     </WagmiProvider>
   );
