@@ -271,11 +271,12 @@ export const NavbarLogo = () => (
     className="relative z-20 flex items-center gap-2 px-2 py-1"
     style={{ textDecoration: "none" }}
   >
+    <img src="/logo.svg" alt="Vatiin AI" width={28} height={28} style={{ display: "block", flexShrink: 0 }} />
     <span style={{ fontWeight: 900, fontSize: 17, color: "var(--text)" }}>
-      DeFAI
+      Vatiin
     </span>
     <span style={{ fontWeight: 900, fontSize: 17, color: "var(--accent)" }}>
-      YieldGuard
+      AI
     </span>
   </a>
 );
