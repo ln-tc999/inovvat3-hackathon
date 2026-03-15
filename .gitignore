@@ -4,6 +4,7 @@ dist/
 out/
 cache/
 .env
+**/.env
 *.env.local
 pnpm-lock.yaml
 packages/contracts/lib/
