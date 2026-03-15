@@ -75,6 +75,21 @@ export interface GenerateProfileResponse {
   reasoning:            string;
 }
 
+export interface DepositWithdrawRequest {
+  userAddress: string;
+  asset: "USDC" | "WETH";
+  amount: number;
+  protocol?: "aave" | "morpho";
+}
+
+export interface DepositWithdrawResponse {
+  success: boolean;
+  txHash: string;
+  asset: string;
+  amount: number;
+  protocol: string;
+}
+
 export const apiClient = {
   setInstruction: (body: { instruction: string; maxRisk?: number; userAddress?: string }) =>
     apiFetch<SetInstructionResponse>("/agent/set-instruction", {
@@ -95,6 +110,18 @@ export const apiClient = {
 
   generateProfile: (body: GenerateProfileRequest) =>
     apiFetch<GenerateProfileResponse>("/agent/generate-profile", {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
+
+  deposit: (body: DepositWithdrawRequest) =>
+    apiFetch<DepositWithdrawResponse>("/agent/deposit", {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
+
+  withdraw: (body: DepositWithdrawRequest) =>
+    apiFetch<DepositWithdrawResponse>("/agent/withdraw", {
       method: "POST",
       body: JSON.stringify(body),
     }),
