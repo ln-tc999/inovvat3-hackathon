@@ -14,12 +14,14 @@ interface Props {
 }
 
 function GuardInner({ children }: Props) {
-  const { address, isConnected } = useAccount();
+  const { address, isConnected, isConnecting, isReconnecting } = useAccount();
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
+    // Wait for wagmi to finish hydrating before making any redirect decision
+    if (isConnecting || isReconnecting) return;
+
     if (!isConnected || !address) {
-      // Not connected — redirect to onboarding
       window.location.href = "/onboarding";
       return;
     }
@@ -31,7 +33,7 @@ function GuardInner({ children }: Props) {
         setChecked(true);
       }
     });
-  }, [address, isConnected]);
+  }, [address, isConnected, isConnecting, isReconnecting]);
 
   if (!checked) {
     return (
