@@ -7,43 +7,50 @@
     <div class="text-center mb-10 sm:mb-14">
       <p class="lp-muted text-xs uppercase tracking-widest mb-4">How it works</p>
       <h2 class="lp-text font-black leading-tight" style="font-size: clamp(1.75rem, 4vw, 2.75rem);">
-        Three Steps to<br/>
+        Four Steps to<br/>
         <span class="lp-accent">Autonomous Yield</span>
       </h2>
     </div>
 
     <!-- steps -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 mb-6 sm:mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-6 sm:mb-8">
       {[
         {
           step: "01",
           icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>`,
-          title: "Connect & Instruct",
-          desc: "Connect your wallet, deploy a Safe Smart Account in one click, then type your strategy in plain English.",
-          tag: "ERC-4337 Safe Wallet",
+          title: "Connect & Onboard",
+          desc: "Connect your wallet and complete the onboarding wizard. Set your risk tier, preferred assets, daily limit, and yield target.",
+          tag: "RainbowKit + wagmi",
         },
         {
           step: "02",
-          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2M15 20v2M2 15h2M20 15h2M2 9h2M20 9h2M9 2v2M9 20v2"/></svg>`,
-          title: "AI Decides On-Chain",
-          desc: "Every 6 hours, Chainlink Automation triggers an LLM call via Chainlink Functions. The AI analyzes live pool data and outputs a verified JSON decision.",
-          tag: "Chainlink Functions + Qwen 2.5",
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+          title: "Set Your Strategy",
+          desc: "Type your instruction in plain English. Qwen 3 235B generates a named agent persona and a yield strategy tailored to your profile.",
+          tag: "Qwen 3 235B via DashScope",
         },
         {
           step: "03",
+          icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`,
+          title: "Deposit & Approve",
+          desc: "Deposit USDC or WETH from the dashboard. Approve the adapter once, then the agent handles all future supply and withdraw actions.",
+          tag: "ERC20 approve + executeManual",
+        },
+        {
+          step: "04",
           icon: `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>`,
-          title: "Execute & Earn",
-          desc: "Agent executes the rebalance via your Safe module. Funds move between Aave and Morpho automatically. You just watch the yield grow.",
-          tag: "Aave V3 + Morpho Blue",
+          title: "Earn Autonomously",
+          desc: "Chainlink Automation triggers the agent every 6 hours. The AI rebalances between Aave and Morpho for best APY. You just watch the yield grow.",
+          tag: "Chainlink Automation + Cron",
         },
       ].map((item) => (
-        <div class="lp-card relative p-5 sm:p-7 flex flex-col gap-4">
+        <div class="lp-card relative p-5 sm:p-6 flex flex-col gap-4">
           <span class="lp-text absolute top-4 right-5 font-black select-none leading-none"
-            style="font-size: clamp(2.5rem, 5vw, 3.5rem); opacity: 0.05;">
+            style="font-size: clamp(2rem, 4vw, 3rem); opacity: 0.05;">
             {item.step}
           </span>
           <div class="lp-icon-box lp-muted w-10 h-10 flex items-center justify-center shrink-0" set:html={item.icon} />
-          <h3 class="lp-text font-bold text-base sm:text-lg">{item.title}</h3>
+          <h3 class="lp-text font-bold text-sm sm:text-base">{item.title}</h3>
           <p class="lp-muted text-sm leading-relaxed flex-1">{item.desc}</p>
           <span class="lp-tag self-start">{item.tag}</span>
         </div>
@@ -55,15 +62,30 @@
       <p class="lp-muted text-xs uppercase tracking-widest mb-5 text-center">Architecture</p>
       <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 flex-wrap">
         {[
-          "User EOA Wallet",
-          "Safe Smart Account",
+          "User Wallet",
+          "Frontend (Vercel)",
+          "Backend (Railway)",
+          "Qwen 3 235B",
           "YieldOptimizerCore",
-          "Chainlink Automation",
-          "Chainlink Functions (LLM)",
-          "Aave V3 / Morpho Blue",
+          "Aave V3 / Morpho",
         ].map((node, i, arr) => (
           <div class="flex items-center gap-2 sm:gap-3">
             <span class="lp-tag">{node}</span>
+            {i < arr.length - 1 && (
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lp-muted shrink-0 hidden sm:block opacity-40"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            )}
+          </div>
+        ))}
+      </div>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 flex-wrap mt-3">
+        {[
+          "Chainlink Automation",
+          "AutoYieldConsumer.sol",
+          "Backend Event Watcher",
+          "node-cron fallback",
+        ].map((node, i, arr) => (
+          <div class="flex items-center gap-2 sm:gap-3">
+            <span class="lp-tag" style="border-color: var(--accent); color: var(--accent);">{node}</span>
             {i < arr.length - 1 && (
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lp-muted shrink-0 hidden sm:block opacity-40"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             )}
