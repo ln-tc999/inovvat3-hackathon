@@ -4,8 +4,6 @@
  * RainbowKit handles: modal, connectors, wrong-network, disconnect.
  */
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useAccount } from "wagmi";
-import { LayoutDashboard } from "lucide-react";
 import { WagmiProvider } from "../components/WagmiProvider";
 import { useTheme } from "../lib/useTheme";
 
@@ -14,36 +12,14 @@ interface Props {
   redirectToDashboard?: boolean;
 }
 
-function WalletConnectInner({ variant = "header", redirectToDashboard = false }: Props) {
-  const { isConnected } = useAccount();
-
-  // Redirect to dashboard once connected (hero CTA behaviour)
-  if (isConnected && variant === "hero" && redirectToDashboard) {
-    if (typeof window !== "undefined") window.location.href = "/dashboard";
-    return null;
-  }
-
+function WalletConnectInner({ variant = "header" }: Props) {
   return (
-    <div className="flex items-center gap-2">
-      {/* Show dashboard link when connected */}
-      {isConnected && (
-        <a
-          href="/dashboard"
-          className="btn-fill-up inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold"
-          style={{ background: "var(--surface-2)", color: "var(--text)", border: "1px solid var(--border)" }}
-        >
-          <LayoutDashboard size={15} />
-          Dashboard
-        </a>
-      )}
-
-      <ConnectButton
-        label={variant === "hero" ? "Connect Wallet & Start Earning" : "Connect Wallet"}
-        showBalance={false}
-        chainStatus="none"
-        accountStatus="avatar"
-      />
-    </div>
+    <ConnectButton
+      label={variant === "hero" ? "Connect Wallet & Start Earning" : "Connect Wallet"}
+      showBalance={false}
+      chainStatus="none"
+      accountStatus="avatar"
+    />
   );
 }
 
