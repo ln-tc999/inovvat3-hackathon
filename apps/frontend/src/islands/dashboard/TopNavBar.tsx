@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { Bell, Wallet, Sun, Moon } from "lucide-react";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { useQuery } from "@tanstack/react-query";
+import { getRiskProfile } from "../../lib/db";
 
 const NAV_PILLS: { label: string; href?: string }[] = [
   { label: "Overview", href: "/dashboard" },
   { label: "Portfolio", href: "/dashboard/portfolio" },
-  { label: "Agent Controls", href: "/dashboard/agent-controls" }, // not wired yet
+  { label: "Agent Controls", href: "/dashboard/agent-controls" },
   { label: "History", href: "/dashboard/history" },
 ];
 
@@ -18,6 +20,14 @@ export default function TopNavBar({ onToggle, isDark }: Props) {
   const { address, isConnected } = useAccount();
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
+
+  const { data: profile } = useQuery({
+    queryKey: ["risk-profile", address],
+    queryFn: () => getRiskProfile(address!),
+    enabled: !!address,
+  });
+
+  const displayName = profile?.userName?.trim() || null;
   const shortAddr = address
     ? `${address.slice(0, 6)}…${address.slice(-4)}`
     : "";
@@ -224,9 +234,14 @@ export default function TopNavBar({ onToggle, isDark }: Props) {
                 }}
                 aria-hidden="true"
               >
-                {shortAddr.slice(0, 2).toUpperCase()}
+                {displayName ? displayName.slice(0, 2).toUpperCase() : shortAddr.slice(0, 2).toUpperCase()}
               </div>
-              <span style={{ color: "var(--muted)" }}>{shortAddr}</span>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", lineHeight: 1.2 }}>
+                {displayName && (
+                  <span style={{ fontSize: 12, fontWeight: 600, color: "var(--text)" }}>{displayName}</span>
+                )}
+                <span style={{ fontSize: 11, color: "var(--muted)" }}>{shortAddr}</span>
+              </div>
             </button>
           ) : (
             <button
