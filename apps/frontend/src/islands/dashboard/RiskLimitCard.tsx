@@ -1,16 +1,38 @@
 import { useQuery } from "@tanstack/react-query";
+import { useAccount } from "wagmi";
+import { getRiskProfile } from "../../lib/db";
 import { apiClient } from "../../lib/api";
 
 export default function RiskLimitCard() {
-  const { data } = useQuery({
+  const { address } = useAccount();
+
+  const { data: status } = useQuery({
     queryKey: ["agent-status"],
     queryFn: () => apiClient.getStatus(),
     refetchInterval: 30_000,
   });
 
-  const instruction = data?.instruction?.toLowerCase() ?? "";
-  const riskPct = /aggressive|degen|high/.test(instruction) ? 80 : /moderate/.test(instruction) ? 55 : 40;
-  const riskLabel = riskPct <= 40 ? "Low Risk" : riskPct <= 60 ? "Moderate Risk" : "High Risk";
+  const { data: profile } = useQuery({
+    queryKey: ["risk-profile", address],
+    queryFn: () => getRiskProfile(address!),
+    enabled: !!address,
+  });
+
+  // Derive risk from profile (preferred) or fall back to instruction parsing
+  let riskPct: number;
+  let riskLabel: string;
+
+  if (profile) {
+    riskPct   = profile.maxRisk * 10;
+    riskLabel = profile.riskTier === "conservative" ? "Low Risk"
+              : profile.riskTier === "moderate"     ? "Moderate Risk"
+              : "High Risk";
+  } else {
+    const instruction = status?.instruction?.toLowerCase() ?? "";
+    riskPct   = /aggressive|degen|high/.test(instruction) ? 80 : /moderate/.test(instruction) ? 55 : 40;
+    riskLabel = riskPct <= 40 ? "Low Risk" : riskPct <= 60 ? "Moderate Risk" : "High Risk";
+  }
+
   const barColor = riskPct <= 40 ? "var(--accent-2)" : riskPct <= 60 ? "var(--accent)" : "var(--danger)";
 
   const breakdown = [
@@ -21,7 +43,14 @@ export default function RiskLimitCard() {
 
   return (
     <div className="d-card flex flex-col gap-4">
-      <p style={{ fontSize: 14, color: "var(--muted)", fontWeight: 500 }}>Agent Risk Level</p>
+      <div className="flex items-center justify-between">
+        <p style={{ fontSize: 14, color: "var(--muted)", fontWeight: 500 }}>Agent Risk Level</p>
+        {profile && (
+          <span className="d-badge d-badge-purple" style={{ fontSize: 11 }}>
+            {profile.agentName}
+          </span>
+        )}
+      </div>
 
       <div>
         <div className="flex items-center justify-between mb-2">
@@ -35,6 +64,7 @@ export default function RiskLimitCard() {
         </div>
         <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 6 }}>
           {riskLabel} — {riskPct}% of max risk budget
+          {profile && ` · Daily limit $${profile.dailyLimitUSD.toLocaleString()}`}
         </p>
       </div>
 
