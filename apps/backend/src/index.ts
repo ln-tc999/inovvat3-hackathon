@@ -1,12 +1,10 @@
+import "./env.js"; // must be first — loads dotenv before any other module reads process.env
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { serve } from "@hono/node-server";
-import { config } from "dotenv";
 import { agentRouter } from "./routes/agent.js";
 import { startAutomation } from "./services/automation.js";
-
-config(); // load .env
 
 const app = new Hono().basePath("/api");
 
