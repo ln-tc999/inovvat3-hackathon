@@ -59,6 +59,15 @@ contract YieldOptimizerCore is ReentrancyGuard {
         _;
     }
 
+    modifier onlyAuthorized() {
+        if (
+            msg.sender != chainlinkAutomation &&
+            msg.sender != chainlinkFunctionsConsumer &&
+            msg.sender != owner
+        ) revert NotAuthorized();
+        _;
+    }
+
     constructor(
         address _policy,
         address _chainlinkAutomation,
@@ -81,14 +90,39 @@ contract YieldOptimizerCore is ReentrancyGuard {
         emit Paused(_paused);
     }
 
+    function transferOwnership(address newOwner) external onlyOwner {
+        require(newOwner != address(0), "Zero address");
+        owner = newOwner;
+    }
+
     // ─── Core Execution ──────────────────────────────────────────────────────
-    /// @notice Execute a batch of yield actions for a user (called by Chainlink)
-    /// @param user The Safe smart account address
-    /// @param actions Array of decoded actions from LLM JSON response
+    /// @notice Execute a batch of yield actions for a user (called by Chainlink — validates policy)
     function executeBatch(
         address user,
         YieldAction[] calldata actions
     ) external nonReentrant whenNotPaused onlyAutomation {
+        uint256 len = actions.length;
+        for (uint256 i = 0; i < len; ) {
+            _executeActionWithPolicy(user, actions[i]);
+            unchecked { ++i; }
+        }
+        emit ActionsExecuted(user, len);
+    }
+
+    /// @notice Execute a batch manually — callable by owner (backend wallet), skips policy check
+    function executeManual(
+        address user,
+        YieldAction[] calldata actions
+    ) external nonReentrant whenNotPaused onlyAuthorized {
+        uint256 len = actions.length;
+        for (uint256 i = 0; i < len; ) {
+            _executeAction(user, actions[i]);
+            unchecked { ++i; }
+        }
+        emit ActionsExecuted(user, len);
+    }
+
+    function _executeBatchInternal(address user, YieldAction[] calldata actions) internal {
         uint256 len = actions.length;
         for (uint256 i = 0; i < len; ) {
             _executeAction(user, actions[i]);
@@ -106,6 +140,26 @@ contract YieldOptimizerCore is ReentrancyGuard {
             amount = IERC20(action.asset).balanceOf(user);
         }
 
+        ILendingAdapter adapter = ILendingAdapter(action.protocol);
+
+        if (action.action == ActionType.SUPPLY) {
+            adapter.supply(action.asset, amount, user);
+        } else if (action.action == ActionType.WITHDRAW) {
+            adapter.withdraw(action.asset, amount, user);
+        } else if (action.action == ActionType.REBALANCE) {
+            revert InvalidAction();
+        }
+    }
+
+    /// @notice Internal execution with policy validation (used by Chainlink paths)
+    function _executeActionWithPolicy(address user, YieldAction calldata action) internal {
+        if (!registeredAdapters[action.protocol]) revert AdapterNotRegistered();
+
+        uint256 amount = action.amount;
+        if (amount == 0) {
+            amount = IERC20(action.asset).balanceOf(user);
+        }
+
         // Validate against policy (checks daily limit, allowlist, session expiry)
         policy.validateAction(user, action.protocol, amount);
 
@@ -116,7 +170,6 @@ contract YieldOptimizerCore is ReentrancyGuard {
         } else if (action.action == ActionType.WITHDRAW) {
             adapter.withdraw(action.asset, amount, user);
         } else if (action.action == ActionType.REBALANCE) {
-            // Withdraw from current, re-supply to new (handled as two separate actions in practice)
             revert InvalidAction();
         }
     }
